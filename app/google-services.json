@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "332820775115",
+    "firebase_url": "https://prepko-c0ff9.firebaseio.com",
+    "project_id": "prepko-c0ff9",
+    "storage_bucket": "prepko-c0ff9.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:332820775115:android:62f630ac0567841f89db4e",
+        "android_client_info": {
+          "package_name": "com.example.prepko"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "332820775115-2ddoteut6400abr4n4su00mhisk2m62h.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBbmY92wMKeYPiJqXYt_xbzQaVqpLFwoU0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "332820775115-2ddoteut6400abr4n4su00mhisk2m62h.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
