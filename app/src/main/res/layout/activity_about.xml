@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".About">
+
+    <TextView
+
+        android:id="@+id/aboutTitle"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="160dp"
+        android:layout_marginLeft="160dp"
+        android:layout_marginTop="100dp"
+        android:layout_marginEnd="160dp"
+        android:layout_marginRight="160dp"
+        android:text="About prepko"
+        android:textSize="30sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <TextView
+        android:id="@+id/aboutTxt"
+        android:layout_width="334dp"
+        android:layout_height="496dp"
+        android:layout_marginStart="39dp"
+        android:layout_marginLeft="39dp"
+        android:layout_marginTop="21dp"
+        android:layout_marginEnd="38dp"
+        android:layout_marginRight="38dp"
+        android:text='Our main goal at Prepko is to make your cooking experience as enjoyable and easy as possible while making you a better cook with each meal. We also bring a unique feature to all of our recipes. They are all kosher! So what is Kosher?  "Kashrut"- means fit, proper or correct. Also, “Mindful consumption” and “Personal accountability on what you consume” {R’ Peretz Motzkin}. Kosher is a strict set of Jewish laws that were made to ensure people follow the correct way to consume foods and drinks, making sure the animals have zero imperfections and were not abused. "Kashrut" is divided into three main food categories: Meat, dairy and *parve.  *Parve- foods that are neither meat nor dairy are called parve- usually refers to Eggs, fish, fruits, vegetables, legumes, grains, soft drinks, pasta, candy etc.   About our Kashrut.  We are currently certified by the RCC- Rabbinical Council of California. For any questions about our Kashrut, please email us at info@prepko.com and will send you our Kashrut certification.  '
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/aboutTitle" />
+</androidx.constraintlayout.widget.ConstraintLayout>

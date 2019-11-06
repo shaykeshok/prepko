@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">prepko</string>
+    <string name="edit_message">Enter a message</string>
+    <string name="send_message">send</string>
 </resources>

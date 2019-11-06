@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "332820775115-93avakrq0f1q2j8gbe9s4pf4snmpe8p0.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.prepko",
+            "certificate_hash": "074d591f4ef5101f524a71e42956c58ce875a616"
+          }
+        },
+        {
           "client_id": "332820775115-2ddoteut6400abr4n4su00mhisk2m62h.apps.googleusercontent.com",
           "client_type": 3
         }
