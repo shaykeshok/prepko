@@ -35,7 +35,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void sendMessage(View view){
-
+        Intent intent = new Intent(this, About.class);
+        startActivity(intent);
         //Log.w(TAG, "Error adding document");
         /*
         Intent intent = new Intent(this, DisplayMessageActivity.class);

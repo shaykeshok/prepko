@@ -39,6 +39,7 @@ public class About extends AppCompatActivity {
                     }
                 });
         */
+        //משיכה רק של שדה אחד ספציפי מתוך טבלה וdocument  ספציפי
         DocumentReference docRef = db.collection("param").document("W8GT0yCRTfnyMSho6e0o");
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
@@ -47,7 +48,7 @@ public class About extends AppCompatActivity {
                     DocumentSnapshot document = task.getResult();
                     if (document.exists()) {
                         Log.d(TAG, "DocumentSnapshot data: " + document.get("aboutTxt"));
-                        TextView textView = findViewById(R.id.textView);
+                        TextView textView = findViewById(R.id.aboutTxt);
                         textView.setText(document.get("aboutTxt").toString());
                     } else {
                         Log.d(TAG, "No such document");
