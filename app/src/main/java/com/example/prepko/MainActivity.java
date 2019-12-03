@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 
+import com.example.prepko.ui.login.LoginActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
@@ -35,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void sendMessage(View view){
+        Log.w(TAG, "Its work");
         Intent intent = new Intent(this, About.class);
         startActivity(intent);
         //Log.w(TAG, "Error adding document");
@@ -103,6 +105,16 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+    public void Navigate(View view) {
+        Log.w(TAG, "Its work");
+        Intent intent = new Intent(this, chooseProduct.class);
+        startActivity(intent);
+    }
+    public void NavigateLogin(View view) {
+        Log.w(TAG, "Its work");
+        Intent intent = new Intent(this, LoginActivity.class);
+        startActivity(intent);
     }
 }
 
