@@ -10,8 +10,8 @@
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="336dp"
-        android:layout_height="253dp"
+        android:layout_width="330dp"
+        android:layout_height="287dp"
         android:layout_marginTop="104dp"
         android:onClick="sendMessage"
         app:layout_constraintEnd_toEndOf="parent"
@@ -55,7 +55,7 @@
         android:shadowColor="#ECEAE7"
         android:text="ButtonLogin"
         android:textColor="#F3ECEC"
-        android:textColorHighlight="#9B1A1A"
+        android:textColorHighlight="#F5F5F5"
         android:textColorHint="#EAEBF3"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
