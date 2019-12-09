@@ -25,10 +25,10 @@
             <TextView
 
                 android:id="@+id/aboutTitle"
-                android:layout_width="194dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="160dp"
-                android:layout_marginLeft="160dp"
+                android:layout_width="186dp"
+                android:layout_height="43dp"
+                android:layout_marginStart="110dp"
+                android:layout_marginLeft="190dp"
                 android:layout_marginTop="48dp"
                 android:layout_marginEnd="160dp"
                 android:layout_marginRight="160dp"

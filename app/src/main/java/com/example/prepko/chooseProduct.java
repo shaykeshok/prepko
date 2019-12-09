@@ -26,7 +26,7 @@ public class chooseProduct extends AppCompatActivity {
         linearLayout = findViewById(R.id.linear_layout);
         for (int i = 1; i <= 2; i++) {
             TextView textView = new TextView(this);
-            textView.setText("TextView " + String.valueOf(i));
+            //textView.setText("TextView " + String.valueOf(i));
             textView.setId(i);
             linearLayout.addView(textView);
         }
@@ -47,7 +47,7 @@ public class chooseProduct extends AppCompatActivity {
         RadioGroup radioGroup = new RadioGroup(this);
         radioGroup.setOrientation(LinearLayout.HORIZONTAL);
         linearLayout.addView(radioGroup);
-        for (int i = 1; i <= 3; i++) {
+        for (int i = 1; i <= 4; i++) {
             RadioButton radioButton = new RadioButton(this);
             radioButton.setText("Option " + String.valueOf(i));
             radioGroup.addView(radioButton);
