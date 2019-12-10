@@ -10,7 +10,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 
-import com.example.prepko.ui.login.LoginActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
@@ -113,7 +112,7 @@ public class MainActivity extends AppCompatActivity {
     }
     public void NavigateLogin(View view) {
         Log.w(TAG, "Its work");
-        Intent intent = new Intent(this, LoginActivity.class);
+        Intent intent = new Intent(this, Login.class);
         startActivity(intent);
     }
 }
