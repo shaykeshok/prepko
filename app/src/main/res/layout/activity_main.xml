@@ -4,12 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    android:background="#00FF9900"
+    tools:context=".MainActivity"
+    tools:visibility="visible">
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="336dp"
-        android:layout_height="253dp"
+        android:layout_width="330dp"
+        android:layout_height="287dp"
         android:layout_marginTop="104dp"
         android:onClick="sendMessage"
         app:layout_constraintEnd_toEndOf="parent"
@@ -20,56 +22,83 @@
 
     <Button
         android:id="@+id/button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="148dp"
-        android:layout_marginLeft="148dp"
+        android:layout_width="80dp"
+        android:layout_height="43dp"
+        android:layout_marginStart="142dp"
+        android:layout_marginLeft="142dp"
         android:layout_marginTop="422dp"
-        android:layout_marginEnd="175dp"
-        android:layout_marginRight="175dp"
+        android:layout_marginEnd="142dp"
+        android:layout_marginRight="142dp"
         android:layout_marginBottom="261dp"
+        android:background="#FF9800"
         android:onClick="Navigate"
-        android:text="Button"
+        android:text="meal plans"
+        android:textColor="#ECEAE7"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.489"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
 
     <Button
-        android:id="@+id/button2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="148dp"
-        android:layout_marginLeft="148dp"
-        android:layout_marginTop="422dp"
-        android:layout_marginEnd="175dp"
-        android:layout_marginRight="175dp"
-        android:layout_marginBottom="261dp"
-        android:onClick="Navigate"
-        android:text="Button"
+        android:id="@+id/button3"
+        android:layout_width="80dp"
+        android:layout_height="43dp"
+        android:layout_marginStart="142dp"
+        android:layout_marginLeft="142dp"
+        android:layout_marginTop="475dp"
+        android:layout_marginEnd="142dp"
+        android:layout_marginRight="165dp"
+        android:layout_marginBottom="65dp"
+        android:background="#FF9800"
+        android:onClick="NavigateLogin"
+        android:shadowColor="#ECEAE7"
+        android:text="Sign in"
+        android:textColor="#F3ECEC"
+        android:textColorHighlight="#F5F5F5"
+        android:textColorHint="#EAEBF3"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.4" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="319dp"
+        android:layout_height="47dp"
+        android:layout_marginTop="16dp"
+        android:text="kosher cooking,deliverd"
+        android:textColor="#FF9900"
+        android:textSize="22sp"
+        app:layout_constraintBottom_toTopOf="@+id/imageView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintVertical_bias="0.0" />
 
-    <Button
-        android:id="@+id/button3"
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="142dp"
-        android:layout_marginLeft="142dp"
-        android:layout_marginEnd="181dp"
-        android:layout_marginRight="181dp"
-        android:layout_marginBottom="65dp"
-        android:onClick="NavigateLogin"
-        android:text="ButtonLogin"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.375"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button"
-        app:layout_constraintVertical_bias="0.0" />
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="20dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="20dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="20dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

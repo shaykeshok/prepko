@@ -39,7 +39,7 @@ public class About extends AppCompatActivity {
                     }
                 });
         */
-        //משיכה רק של שדה אחד ספציפי מתוך טבלה וdocument  ספציפי
+
         DocumentReference docRef = db.collection("param").document("W8GT0yCRTfnyMSho6e0o");
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
