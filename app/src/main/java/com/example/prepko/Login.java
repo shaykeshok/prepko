@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -42,7 +43,11 @@ public class Login extends AppCompatActivity {
             }
         });
     }
-
+    public void NavigateSignUp(View view) {
+        Log.w(TAG, "Its work");
+        Intent intent = new Intent(this, signUp.class);
+        startActivity(intent);
+    }
     private void login() {
         Log.d(TAG, "Login");
         if(!validate()) {
@@ -88,10 +93,10 @@ public class Login extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 Log.d(TAG, document.getId() + " => " + document.getData());
-                                if(document.getData().containsKey("email")&&document.getData().containsKey("pass"))
-                                    if(document.getData().get("email")!=null &&document.getData().get("pass")!=null) {
-                                         _emailDB = document.getData().get("email").toString();
-                                         _passDB = document.getData().get("pass").toString();
+                                if(document.getData().containsKey("Email")&&document.getData().containsKey("Pass"))
+                                    if(document.getData().get("Email")!=null &&document.getData().get("Pass")!=null) {
+                                         _emailDB = document.getData().get("Email").toString();
+                                         _passDB = document.getData().get("Pass").toString();
                                     }
                                     else
                                         continue;
@@ -102,7 +107,7 @@ public class Login extends AppCompatActivity {
 
                                     return;
                                 }
-                                Log.d(TAG, document.getId() + " => " + document.getData().get("name"));
+                                Log.d(TAG, document.getId() + " => " + document.getData().get("Fullname"));
                             }
                         } else {
                             Log.w(TAG, "Error getting documents.", task.getException());
