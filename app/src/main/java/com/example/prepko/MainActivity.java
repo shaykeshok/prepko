@@ -115,6 +115,11 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, Login.class);
         startActivity(intent);
     }
+    public void NavigateSignUp(View view) {
+        Log.w(TAG, "Its work");
+        Intent intent = new Intent(this, signUp.class);
+        startActivity(intent);
+    }
 }
 
 

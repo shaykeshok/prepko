@@ -8,20 +8,8 @@
     tools:context=".MainActivity"
     tools:visibility="visible">
 
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="330dp"
-        android:layout_height="287dp"
-        android:layout_marginTop="104dp"
-        android:onClick="sendMessage"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.493"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/capture1" />
-
     <Button
-        android:id="@+id/button"
+        android:id="@+id/mealBtn"
         android:layout_width="80dp"
         android:layout_height="43dp"
         android:layout_marginStart="142dp"
@@ -39,18 +27,35 @@
         app:layout_constraintHorizontal_bias="0.489"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintVertical_bias="1.0" />
 
     <Button
-        android:id="@+id/button3"
+        android:id="@+id/aboutBtn"
         android:layout_width="80dp"
         android:layout_height="43dp"
         android:layout_marginStart="142dp"
         android:layout_marginLeft="142dp"
-        android:layout_marginTop="475dp"
+        android:layout_marginEnd="142dp"
+        android:layout_marginRight="142dp"
+        android:layout_marginBottom="340dp"
+        android:background="#FF9800"
+        android:onClick="Navigate"
+        android:text="About Us"
+        android:textColor="#ECEAE7"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.489"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/signinBtn"
+        android:layout_width="80dp"
+        android:layout_height="43dp"
+        android:layout_marginStart="142dp"
+        android:layout_marginLeft="142dp"
         android:layout_marginEnd="142dp"
         android:layout_marginRight="165dp"
-        android:layout_marginBottom="65dp"
+        android:layout_marginBottom="160dp"
         android:background="#FF9800"
         android:onClick="NavigateLogin"
         android:shadowColor="#ECEAE7"
@@ -60,10 +65,30 @@
         android:textColorHint="#EAEBF3"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.4" />
+        app:layout_constraintHorizontal_bias="0.489"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/signUpBtn"
+        android:layout_width="80dp"
+        android:layout_height="43dp"
+        android:layout_marginStart="142dp"
+        android:layout_marginLeft="142dp"
+        android:layout_marginEnd="142dp"
+        android:layout_marginRight="165dp"
+        android:layout_marginBottom="92dp"
+        android:background="#FF9800"
+        android:onClick="NavigateSignUp"
+        android:shadowColor="#ECEAE7"
+        android:text="Sign up"
+        android:textColor="#F3ECEC"
+        android:textColorHighlight="#F5F5F5"
+        android:textColorHint="#EAEBF3"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.489"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/textView2"
@@ -73,12 +98,10 @@
         android:text="kosher cooking,deliverd"
         android:textColor="#FF9900"
         android:textSize="22sp"
-        app:layout_constraintBottom_toTopOf="@+id/imageView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline"
