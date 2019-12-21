@@ -1,28 +1,22 @@
 package com.example.prepko;
 
 import androidx.appcompat.app.AppCompatActivity;
-import java.util.HashMap;
-import java.util.Map;
+
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.EditText;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 
 import androidx.annotation.NonNull;
 
-import static android.provider.AlarmClock.EXTRA_MESSAGE;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
@@ -107,7 +101,26 @@ public class MainActivity extends AppCompatActivity {
     }
     public void Navigate(View view) {
         Log.w(TAG, "Its work");
-        Intent intent = new Intent(this, chooseProduct.class);
+        String btnName=view.getResources().getResourceEntryName(view.getId());
+        Intent intent;
+        switch (btnName){
+            case "aboutBtn":
+                intent = new Intent(this, About.class);
+                break;
+            case "Administrator":
+                intent = new Intent(this, Administrator.class);
+                break;
+            case "chooseProduct":
+                intent = new Intent(this, chooseProduct.class);
+                break;
+            default:
+                intent = new Intent(this, chooseProduct.class);
+        }
+//        if(btnName.equals("aboutBtn")){
+//             intent = new Intent(this, About.class);
+//        }else{
+//             intent = new Intent(this, chooseProduct.class);
+//        }
         startActivity(intent);
     }
     public void NavigateLogin(View view) {
@@ -115,10 +128,15 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, Login.class);
         startActivity(intent);
     }
-    public void NavigateSignUp(View view) {
-        Log.w(TAG, "Its work");
-        Intent intent = new Intent(this, signUp.class);
-        startActivity(intent);
+    public void NavigateFacebook(View view) {
+        Log.w(TAG, "NavigateFacebook");
+        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.facebook.com/prepkosher/"));
+        startActivity(browserIntent);
+    }
+    public void NavigateInstagram(View view) {
+        Log.w(TAG, "NavigateInstagram");
+        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.instagram.com/prepkosher/"));
+        startActivity(browserIntent);
     }
 }
 
