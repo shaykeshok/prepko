@@ -67,6 +67,26 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.489"
         app:layout_constraintStart_toStartOf="parent" />
+    <Button
+        android:id="@+id/Administrator"
+        android:layout_width="120dp"
+        android:layout_height="43dp"
+        android:layout_marginStart="142dp"
+        android:layout_marginLeft="142dp"
+        android:layout_marginEnd="142dp"
+        android:layout_marginRight="165dp"
+        android:layout_marginBottom="100dp"
+        android:background="#FF9800"
+        android:onClick="Navigate"
+        android:shadowColor="#ECEAE7"
+        android:text="Administrator"
+        android:textColor="#F3ECEC"
+        android:textColorHighlight="#F5F5F5"
+        android:textColorHint="#EAEBF3"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.489"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/signUpBtn"
@@ -123,5 +143,38 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         app:layout_constraintGuide_begin="20dp" />
+
+    <ImageView
+        android:id="@+id/facebook"
+        android:layout_width="152dp"
+        android:layout_height="43dp"
+        android:layout_marginBottom="3dp"
+        android:onClick="NavigateFacebook"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@drawable/facebook"
+        tools:layout_editor_absoluteY="557dp" />
+
+    <ImageView
+        android:id="@+id/twitter"
+        android:layout_width="43dp"
+        android:layout_height="44dp"
+        android:layout_marginBottom="3dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.481"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@drawable/twitter"
+        tools:layout_editor_absoluteY="556dp" />
+
+    <ImageView
+        android:id="@+id/instagram"
+        android:layout_width="97dp"
+        android:layout_height="45dp"
+        android:layout_marginEnd="36dp"
+        android:layout_marginRight="36dp"
+        android:layout_marginBottom="3dp"
+        android:onClick="NavigateInstagram"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@drawable/instagram"
+        tools:layout_editor_absoluteY="556dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
