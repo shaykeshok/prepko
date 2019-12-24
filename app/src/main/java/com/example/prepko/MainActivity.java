@@ -99,7 +99,8 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-    public void Navigate(View view) {
+    public void Navigate(View view)
+    {
         Log.w(TAG, "Its work");
         String btnName=view.getResources().getResourceEntryName(view.getId());
         Intent intent;
