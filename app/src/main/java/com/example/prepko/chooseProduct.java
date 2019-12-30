@@ -60,6 +60,7 @@ public class chooseProduct extends AppCompatActivity {
     public String OrderID="";
     public String OrderIDNewRaw="";
     int i=0;
+    boolean ok=false;
 
 
     @Override
@@ -85,7 +86,6 @@ public class chooseProduct extends AppCompatActivity {
         buttonLayout.setOrientation(LinearLayout.VERTICAL);
 
         linearLayout.addView(buttonLayout);
-
         Button btn = new Button(this);
         btn.setText("Purchase");
         btn.setBackgroundColor(Color.RED);
@@ -93,18 +93,21 @@ public class chooseProduct extends AppCompatActivity {
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                int _picCode = 0;
-                Task<QuerySnapshot> a = db.collection("mealKit").get();
+                ok=false;
+                Task<QuerySnapshot> a = db.collection("orders").get();
                 while (!a.isSuccessful()) {
                 }
                 for (QueryDocumentSnapshot document : a.getResult()) {
                     Log.d("image Class", document.getId() + " => " + document.getData());
                     Object temp = document.getData().get("idKlali");
                     if (temp != null)
-                        if(temp.equals(OrderID))
+                        if(temp.equals(OrderID)) {
+                            ok=true;
                             Purchase();
+                        }
                 }
-                Toast.makeText(getBaseContext(), "You Must Choose Products", Toast.LENGTH_LONG).show();
+                if(ok)
+                    Toast.makeText(getBaseContext(), "You Must Choose Products", Toast.LENGTH_LONG).show();
 
             }
         });
