@@ -17,10 +17,11 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 public class About extends AppCompatActivity {
     private static final String TAG = "About";
-    public FirebaseFirestore db = FirebaseFirestore.getInstance();
+    public FirebaseFirestore db = FirebaseFirestore.getInstance(); // import param form firebase
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_about);
 

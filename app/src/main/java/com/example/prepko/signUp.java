@@ -99,11 +99,7 @@ public class signUp extends AppCompatActivity {
             signUpBtn.setEnabled(true);
         }
 
-        @Override
-        public void onBackPressed () {
-            // Disable going back to the MainActivity
-            moveTaskToBack(true);
-        }
+
 
         public boolean validate(){
             boolean valid = true;
