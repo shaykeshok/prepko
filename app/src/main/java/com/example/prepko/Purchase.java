@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -35,7 +36,9 @@ public class Purchase extends AppCompatActivity {
     EditText _address ;
     EditText _phone;
     EditText _deliverWhen ;
-    String orderID = "";
+    String orderID;
+    boolean useCredit;
+    String userID;
     private StorageReference storageRef= FirebaseStorage.getInstance().getReference();
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
 
@@ -43,9 +46,13 @@ public class Purchase extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_purchase);
+
+        SharedPreferences loginSettings = getSharedPreferences("LoginPreferences", MODE_PRIVATE);
+        userID=loginSettings.getString("UserID","guest");
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
-            orderID = extras.getString("OrderID");
+            orderID = extras.getString("OrderID", "");
+            useCredit = extras.getBoolean("useCredit", false);
             //Toast.makeText(getBaseContext(), orderID, Toast.LENGTH_LONG).show();
         }
         _full_name = (EditText) findViewById(R.id.full_name);
@@ -57,13 +64,35 @@ public class Purchase extends AppCompatActivity {
         _address = (EditText) findViewById(R.id.address);
         _phone = (EditText) findViewById(R.id.phone);
         _deliverWhen = (EditText) findViewById(R.id.deliverWhen);
-
+        if (useCredit) {
+            _cardID.setVisibility(View.INVISIBLE);
+            _CreditNum.setVisibility(View.INVISIBLE);
+            _validity.setVisibility(View.INVISIBLE);
+            _cvv.setVisibility(View.INVISIBLE);
+            _full_name.setVisibility(View.INVISIBLE);
+        }
     }
 
     public void Purchase (View view) {
-        if(validate()) {
-            ok=false;
+        if (validate()) {
+            ok = false;
+            if (!useCredit && !userID.equals("guest")) {
+                new AlertDialog.Builder(view.getContext())
+                        .setTitle("Credit Details")
+                        .setMessage("Save your Credit Details?")
+                        // Specifying a listener allows you to take an action before dismissing the dialog.
+                        // The dialog is automatically dismissed when a dialog button is clicked.
+                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                SaveCreditDetails();
+                            }
+                        })
 
+                        // A null listener allows the button to dismiss the dialog and take no further action.
+                        .setNegativeButton(android.R.string.no, null)
+                        .setIcon(android.R.drawable.ic_dialog_alert)
+                        .show();
+            }
             //Toast.makeText(getBaseContext(), "Sign Up success", Toast.LENGTH_LONG).show();
             new AlertDialog.Builder(view.getContext())
                     .setTitle("Purchase")
@@ -72,8 +101,9 @@ public class Purchase extends AppCompatActivity {
                     // The dialog is automatically dismissed when a dialog button is clicked.
                     .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
-                            updateOrders();
-                            ok=true;
+                            buildFinalOrder();
+                            //insertToUsersOrders();
+                            ok = true;
                         }
                     })
 
@@ -82,21 +112,39 @@ public class Purchase extends AppCompatActivity {
                     .setIcon(android.R.drawable.ic_dialog_alert)
                     .show();
 
-            if(ok){
-                Toast.makeText(getBaseContext(),"Purchase Success" , Toast.LENGTH_LONG).show();
+            if (ok) {
+                Toast.makeText(getBaseContext(), "Purchase Success", Toast.LENGTH_LONG).show();
                 Intent intent = new Intent(this, MainActivity.class);
                 startActivity(intent);
             }
 
 
-
-        }
-        else
+        } else
             return;
         //finish();
     }
 
-    private void updateOrders() {
+    private void insertToUsersOrders() {
+
+    }
+
+    private void SaveCreditDetails() {
+        Map<String, Object> creditDetails = new HashMap<>();
+
+        String full_name = _full_name.getText().toString();
+        String cardID = _cardID.getText().toString();
+        String CreditNum = _CreditNum.getText().toString();
+        String validity = _validity.getText().toString();
+        String cvv = _cvv.getText().toString();
+        creditDetails.put("cardID", cardID);
+        creditDetails.put("fullname", full_name);
+        creditDetails.put("CreditNum", CreditNum);
+        creditDetails.put("validity", validity);
+        creditDetails.put("cvv", cvv);
+        db.collection("users").document(userID).update(creditDetails);
+    }
+
+    private void buildFinalOrder() {
         Task<QuerySnapshot> a = db.collection("orders").get();
         while (!a.isSuccessful()) {
         }
@@ -105,26 +153,29 @@ public class Purchase extends AppCompatActivity {
             Object temp = document.getData().get("idKlali");
             if (temp != null) {
                 if (temp.equals(orderID)) {
-                    String full_name = _full_name.getText().toString();
-                    String cardID = _cardID.getText().toString();
-                    String CreditNum = _CreditNum.getText().toString();
-                    String validity = _validity.getText().toString();
-                    String cvv = _cvv.getText().toString();
+                    Map<String, Object> orderDetails = new HashMap<>();
+                    if (!useCredit) {
+                        String full_name = _full_name.getText().toString();
+                        String cardID = _cardID.getText().toString();
+                        String CreditNum = _CreditNum.getText().toString();
+                        String validity = _validity.getText().toString();
+                        String cvv = _cvv.getText().toString();
+                        orderDetails.put("cardID", cardID);
+                        orderDetails.put("fullname", full_name);
+                        orderDetails.put("CreditNum", CreditNum);
+                        orderDetails.put("validity", validity);
+                        orderDetails.put("cvv", cvv);
+
+                    }
                     String email = _email.getText().toString();
                     String address = _address.getText().toString();
                     String phone = _phone.getText().toString();
                     String deliverWhen = _deliverWhen.getText().toString();
 
-                    Map<String, Object> orderDetails = new HashMap<>();
-                    orderDetails.put("cardID",cardID) ;
-                    orderDetails.put("fullname",full_name);
-                    orderDetails.put("CreditNum",CreditNum);
-                    orderDetails.put("validity",validity);
-                    orderDetails.put("cvv",cvv);
-                    orderDetails.put("email",email);
-                    orderDetails.put("address",address);
-                    orderDetails.put("phone",phone);
-                    orderDetails.put("deliverWhen",deliverWhen);
+                    orderDetails.put("email", email);
+                    orderDetails.put("address", address);
+                    orderDetails.put("phone", phone);
+                    orderDetails.put("deliverWhen", deliverWhen);
                     db.collection("orders").document(document.getId()).update(orderDetails);
                 }
 
@@ -137,11 +188,7 @@ public class Purchase extends AppCompatActivity {
     public boolean validate() {
         boolean valid = true;
 
-        String full_name = _full_name.getText().toString();
-        String cardID = _cardID.getText().toString();
-        String CreditNum = _CreditNum.getText().toString();
-        String validity = _validity.getText().toString();
-        String cvv = _cvv.getText().toString();
+
         String email = _email.getText().toString();
         String address = _address.getText().toString();
         String phone = _phone.getText().toString();
@@ -151,26 +198,32 @@ public class Purchase extends AppCompatActivity {
             _email.setError("enter a valid email address");
             valid = false;
         }
-
-        if (full_name.isEmpty()) {
-            _full_name.setError("must enter full name");
-            valid = false;
-        }
-        if (cardID.isEmpty()) {
-            _cardID.setError("must enter card ID");
-            valid = false;
-        }
-        if (CreditNum.isEmpty()) {
-            _CreditNum.setError("must enter Credit Num");
-            valid = false;
-        }
-        if (validity.isEmpty()) {
-            _validity.setError("must enter validity");
-            valid = false;
-        }
-        if (cvv.isEmpty()) {
-            _cvv.setError("must enter cvv");
-            valid = false;
+        if (!useCredit) {
+            String full_name = _full_name.getText().toString();
+            String cardID = _cardID.getText().toString();
+            String CreditNum = _CreditNum.getText().toString();
+            String validity = _validity.getText().toString();
+            String cvv = _cvv.getText().toString();
+            if (full_name.isEmpty()) {
+                _full_name.setError("must enter full name");
+                valid = false;
+            }
+            if (cardID.isEmpty()) {
+                _cardID.setError("must enter card ID");
+                valid = false;
+            }
+            if (CreditNum.isEmpty()) {
+                _CreditNum.setError("must enter Credit Num");
+                valid = false;
+            }
+            if (validity.isEmpty()) {
+                _validity.setError("must enter validity");
+                valid = false;
+            }
+            if (cvv.isEmpty()) {
+                _cvv.setError("must enter cvv");
+                valid = false;
+            }
         }
         if (address.isEmpty()) {
             _address.setError("must enter address");

@@ -27,6 +27,8 @@ public class Login extends AppCompatActivity {
     public FirebaseFirestore db = FirebaseFirestore.getInstance();
     private boolean isExistUser;
     public ProgressDialog progressDialog;
+    private String userId="";
+    boolean isAdmin=false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,6 +105,8 @@ public class Login extends AppCompatActivity {
                                         continue;
                                 if(email.equals(_emailDB) && pass.equals(_passDB)){
                                     //isExist(true);
+                                    userId=document.getId();
+                                    isAdmin=(boolean)document.getData().get("isAdmin");
                                     progressDialog.dismiss();
                                     onLoginSuccess();
 
@@ -135,11 +139,14 @@ public class Login extends AppCompatActivity {
 
         SharedPreferences loginSettings = getSharedPreferences("LoginPreferences", MODE_PRIVATE);
         SharedPreferences.Editor prefEditor = loginSettings.edit();
-        prefEditor.putString("UserName", "Guest123");
-        //prefEditor.putBoolean("PaidUser", false);
+        prefEditor.putString("userId", userId);
+        prefEditor.putBoolean("isAdmin", isAdmin);
         prefEditor.commit();
         loginButton.setEnabled(true);
         Toast.makeText(getBaseContext(), "Login success", Toast.LENGTH_LONG).show();
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.putExtra("fromLogin",true);
+        startActivity(intent);
         finish();
     }
 

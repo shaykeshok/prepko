@@ -60,6 +60,7 @@ public class chooseProduct extends AppCompatActivity {
     private boolean useCredit;
     DatabaseReference rootRef ;
     String userID;
+    boolean haveCreditDetails;
     private boolean answerYesDialog;
 
     @Override
@@ -69,6 +70,7 @@ public class chooseProduct extends AppCompatActivity {
 
         SharedPreferences loginSettings = getSharedPreferences("LoginPreferences", MODE_PRIVATE);
         userID=loginSettings.getString("UserID","guest");
+        haveCreditDetails=loginSettings.getBoolean("UserHaveCreditDetails",false);
         imageView=findViewById(R.id.image);
         Task<ListResult> a = storageRef.listAll();
 
@@ -99,6 +101,7 @@ public class chooseProduct extends AppCompatActivity {
                 Task<QuerySnapshot> a = db.collection("orders").get();
                 while (!a.isSuccessful()) {
                 }
+
                 for (QueryDocumentSnapshot document : a.getResult()) {
                     Log.d("image Class", document.getId() + " => " + document.getData());
                     Object temp = document.getData().get("idKlali");
@@ -108,29 +111,39 @@ public class chooseProduct extends AppCompatActivity {
                             //Purchase();
                             useCredit=false;
                             Log.d(TAG, "go to Purchase");
-                            //Toast.makeText(getBaseContext(), "Sign Up success", Toast.LENGTH_LONG).show();
-                            new AlertDialog.Builder(view.getContext())
-                                    .setTitle("Update data")
-                                    .setMessage("Do you want to use the credit card information stored in the system?")
-                                    // Specifying a listener allows you to take an action before dismissing the dialog.
-                                    // The dialog is automatically dismissed when a dialog button is clicked.
-                                    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                                        public void onClick(DialogInterface dialog, int which) {
-                                            updateCreditDetails();
-                                            useCredit=true;
-                                            //answerYesDialog=true;
-                                            Purchase();
-                                        }
-                                    })
+                            if(haveCreditDetails) {
+                                //Toast.makeText(getBaseContext(), "Sign Up success", Toast.LENGTH_LONG).show();
+                                new AlertDialog.Builder(view.getContext())
+                                        .setTitle("Update data")
+                                        .setMessage("Do you want to use the credit card information stored in the system?")
+                                        // Specifying a listener allows you to take an action before dismissing the dialog.
+                                        // The dialog is automatically dismissed when a dialog button is clicked.
+                                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                updateCreditDetails();
+                                                useCredit = true;
+                                                //answerYesDialog=true;
+                                                //Purchase();
+                                            }
+                                        })
 
-                                    // A null listener allows the button to dismiss the dialog and take no further action.
-                                    .setNegativeButton(android.R.string.no, null)
-                                    .setIcon(android.R.drawable.ic_dialog_alert)
-                                    .show();
+                                        // A null listener allows the button to dismiss the dialog and take no further action.
+                                        .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                //Purchase();
+                                            }
+                                        })
+                                        .setIcon(android.R.drawable.ic_dialog_alert)
+                                        .show();
+                            break;
+                            }else {
+                                break;
+                            }
                         }
                 }
                 if(!ok)
                     Toast.makeText(getBaseContext(), "You Must Choose Products", Toast.LENGTH_LONG).show();
+                Purchase();
                 /*if(answerYesDialog){
                     Purchase();
                 }*/
@@ -144,7 +157,6 @@ public class chooseProduct extends AppCompatActivity {
         Intent intent = new Intent(this, Purchase.class);
         intent.putExtra("OrderID",OrderID);
         intent.putExtra("useCredit",useCredit);
-
         startActivity(intent);
         //finish();
     }
@@ -171,9 +183,6 @@ public class chooseProduct extends AppCompatActivity {
         for (QueryDocumentSnapshot doc : b.getResult()) {
             db.collection("orders").document(doc.getId()).update(creditDetails);
         }
-
-
-
     }
 
     public void pushLst(String url,String imgName) {

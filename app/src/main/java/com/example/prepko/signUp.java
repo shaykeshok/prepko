@@ -36,6 +36,7 @@ public class signUp extends AppCompatActivity {
     public FirebaseFirestore db = FirebaseFirestore.getInstance();
     private boolean isExistUser;
     public ProgressDialog progressDialog;
+    private String userId="";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -171,6 +172,7 @@ public class signUp extends AppCompatActivity {
                             }
                             isExist(false);
                             addNewUser(fullname,email,pass,phone);
+                            //addUserToUsersOrdersTbl();
                             Log.w(TAG, "userExist get end");
                             progressDialog.dismiss();
                             onSignUpSuccess();
@@ -179,6 +181,13 @@ public class signUp extends AppCompatActivity {
 
 
 
+    }
+
+    private void addUserToUsersOrdersTbl() {
+        db.collection("UsersOrders").document(userId).set(null);
+        //Task<DocumentReference> a = db.collection("orders").add(order);
+        //while (!a.isSuccessful()) { }
+        Log.d(TAG, "user added to UsersOrders");
     }
 
     private void addNewUser(String fullname,String email,String pass,String phone) {
@@ -198,6 +207,7 @@ public class signUp extends AppCompatActivity {
                     @Override
                     public void onSuccess(DocumentReference documentReference) {
                         Log.d(TAG, "DocumentSnapshot added with ID: " + documentReference.getId());
+                        userId=documentReference.getId();
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {

@@ -11,6 +11,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -32,63 +34,30 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        //SharedPreferences loginSettings = getSharedPreferences("LoginPreferences", MODE_PRIVATE);
-        //String name=loginSettings.getString("UserName","shayke");
+        SharedPreferences loginSettings = getSharedPreferences("LoginPreferences", MODE_PRIVATE);
+        Bundle extras = getIntent().getExtras();
+        boolean fromLogin=false;
+        if (extras != null)
+            fromLogin=extras.getBoolean("fromLogin", false);
+        if(!fromLogin)
+            loginSettings.edit().clear().commit();
+
+        boolean isAdmin = loginSettings.getBoolean("isAdmin", false);
+        if (!isAdmin) {
+            Button _Administrator = (Button) findViewById(R.id.Administrator);
+            _Administrator.setVisibility(View.INVISIBLE);
+        }
+        Log.d(TAG, "userId=" + loginSettings.getString("userId", "guest"));
+
     }
 
-    public void sendMessage(View view){
+    /*public void sendMessage(View view){
         Log.w(TAG, "Its work");
         Intent intent = new Intent(this, About.class);
         startActivity(intent);
-        //Log.w(TAG, "Error adding document");
-        /*
-        Intent intent = new Intent(this, DisplayMessageActivity.class);
-        EditText editText = (EditText) findViewById(R.id.editText);
-        String message = editText.getText().toString();
-        intent.putExtra(EXTRA_MESSAGE, message);
-        startActivity(intent);
-        */
-/*
-         FirebaseFirestore db = FirebaseFirestore.getInstance();
+        Log.d(TAG, "main activity load");
+//Toast.makeText(getBaseContext(), "main activity load", Toast.LENGTH_LONG).show();
 
-        // Create a new user with a first and last name
-        Map<String, Object> user = new HashMap<>();
-        user.put("first", "Ada");
-        user.put("last", "Lovelace");
-        user.put("born", 1815);
-
-// Add a new document with a generated ID
-        db.collection("users")
-                .add(user)
-                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                    @Override
-                    public void onSuccess(DocumentReference documentReference) {
-                        Log.d(TAG, "DocumentSnapshot added with ID: " + documentReference.getId());
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.w(TAG, "Error adding document", e);
-                    }
-                });
-
-        db.collection("users")
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                Log.d(TAG, document.getId() + " => " + document.getData());
-                            }
-                        } else {
-                            Log.w(TAG, "Error getting documents.", task.getException());
-                        }
-                    }
-                });
-
- */
         DocumentReference docRef = db.collection("param").document("W8GT0yCRTfnyMSho6e0o");
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
@@ -106,7 +75,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
-    }
+    }*/
     public void Navigate(View view) {
         Log.w(TAG, "Its work");
 
@@ -117,7 +86,7 @@ public class MainActivity extends AppCompatActivity {
                 intent = new Intent(this, About.class);
                 break;
             case "Administrator":
-                intent = new Intent(this, Administrator.class);
+                intent = new Intent(this, AdminMain.class);
                 break;
             case "chooseProduct":
                 intent = new Intent(this, chooseProduct.class);
@@ -125,11 +94,8 @@ public class MainActivity extends AppCompatActivity {
             default:
                 intent = new Intent(this, chooseProduct.class);
         }
-//        if(btnName.equals("aboutBtn")){
-//             intent = new Intent(this, About.class);
-//        }else{
-//             intent = new Intent(this, chooseProduct.class);
-//        }
+
+        finish();
         startActivity(intent);
     }
     public void NavigateLogin(View view) {
