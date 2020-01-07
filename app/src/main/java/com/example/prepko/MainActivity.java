@@ -3,11 +3,15 @@ package com.example.prepko;
 import androidx.appcompat.app.AppCompatActivity;
 
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -16,6 +20,8 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -26,6 +32,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        //SharedPreferences loginSettings = getSharedPreferences("LoginPreferences", MODE_PRIVATE);
+        //String name=loginSettings.getString("UserName","shayke");
     }
 
     public void sendMessage(View view){
@@ -101,6 +109,7 @@ public class MainActivity extends AppCompatActivity {
     }
     public void Navigate(View view) {
         Log.w(TAG, "Its work");
+
         String btnName=view.getResources().getResourceEntryName(view.getId());
         Intent intent;
         switch (btnName){
@@ -134,9 +143,28 @@ public class MainActivity extends AppCompatActivity {
         startActivity(browserIntent);
     }
     public void NavigateInstagram(View view) {
-        Log.w(TAG, "NavigateInstagram");
+       /* Log.w(TAG, "NavigateInstagram");
         Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.instagram.com/prepkosher/"));
-        startActivity(browserIntent);
+        startActivity(browserIntent);*/
+
+        /*if (ContextCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE)
+                != PackageManager.PERMISSION_GRANTED) {
+            // Permission is not granted
+        }else {
+            String phone = "+972544390155";
+            Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + "+972544390155"));
+            startActivity(intent);
+        }*/
+
+        if (ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.CALL_PHONE},1);
+        }
+        else
+        {
+            String phone = "+972544390155";
+            Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + "+972544390155"));
+            startActivity(intent);
+        }
     }
 }
 

@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.prepko">
 
+    <uses-permission android:name="android.permission.CALL_PHONE" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher_foreground"
@@ -9,11 +11,13 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Purchase"></activity>
+        <activity android:name=".ParamUPD"></activity>
+        <activity android:name=".Orders" />
+        <activity android:name=".AdminMain" />
+        <activity android:name=".Purchase" />
         <activity android:name=".Administrator" />
         <activity android:name=".signUp" />
         <activity android:name=".Login" />
-
         <activity android:name=".chooseProduct" />
         <activity android:name=".About" />
         <activity android:name=".DisplayMessageActivity" />

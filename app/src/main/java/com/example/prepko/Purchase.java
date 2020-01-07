@@ -2,6 +2,8 @@ package com.example.prepko;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -23,6 +25,7 @@ import java.util.Map;
 import static java.lang.Integer.parseInt;
 
 public class Purchase extends AppCompatActivity {
+    boolean ok;
     EditText _full_name ;
     EditText _cardID ;
     EditText _CreditNum ;
@@ -59,10 +62,34 @@ public class Purchase extends AppCompatActivity {
 
     public void Purchase (View view) {
         if(validate()) {
+            ok=false;
+
             //Toast.makeText(getBaseContext(), "Sign Up success", Toast.LENGTH_LONG).show();
-            updateOrders();
-            Intent intent = new Intent(this, MainActivity.class);
-            startActivity(intent);
+            new AlertDialog.Builder(view.getContext())
+                    .setTitle("Purchase")
+                    .setMessage("Are you sure you want to Purchase?")
+                    // Specifying a listener allows you to take an action before dismissing the dialog.
+                    // The dialog is automatically dismissed when a dialog button is clicked.
+                    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            updateOrders();
+                            ok=true;
+                        }
+                    })
+
+                    // A null listener allows the button to dismiss the dialog and take no further action.
+                    .setNegativeButton(android.R.string.no, null)
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .show();
+
+            if(ok){
+                Toast.makeText(getBaseContext(),"Purchase Success" , Toast.LENGTH_LONG).show();
+                Intent intent = new Intent(this, MainActivity.class);
+                startActivity(intent);
+            }
+
+
+
         }
         else
             return;

@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -132,6 +133,11 @@ public class Login extends AppCompatActivity {
     public void onLoginSuccess() {
         Log.d(TAG, "Login success");
 
+        SharedPreferences loginSettings = getSharedPreferences("LoginPreferences", MODE_PRIVATE);
+        SharedPreferences.Editor prefEditor = loginSettings.edit();
+        prefEditor.putString("UserName", "Guest123");
+        //prefEditor.putBoolean("PaidUser", false);
+        prefEditor.commit();
         loginButton.setEnabled(true);
         Toast.makeText(getBaseContext(), "Login success", Toast.LENGTH_LONG).show();
         finish();
