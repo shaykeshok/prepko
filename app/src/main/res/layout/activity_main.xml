@@ -80,8 +80,8 @@
 
     <Button
         android:id="@+id/Administrator"
-        android:layout_width="145dp"
-        android:layout_height="40dp"
+        android:layout_width="112dp"
+        android:layout_height="41dp"
         android:layout_marginStart="142dp"
         android:layout_marginLeft="142dp"
         android:layout_marginEnd="142dp"
@@ -130,7 +130,7 @@
         android:textColor="#F2F3F7"
         android:textColorHighlight="#FF9800"
         android:textColorHint="#FF9800"
-        android:textSize="30sp"
+        android:textSize="24sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.608"
