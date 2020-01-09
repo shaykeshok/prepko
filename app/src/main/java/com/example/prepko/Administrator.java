@@ -131,6 +131,8 @@ public class Administrator extends AppCompatActivity {
 
         Button btn = new Button(this);
         btn.setText("Update Data");
+        btn.setBackgroundColor(Color.parseColor("#f39c12"));
+        btn.setTextColor(Color.WHITE);
         //btn.setId(imgName+"Btn");
         btn.setTag(imgName+"Btn");
         btn.setId(i);

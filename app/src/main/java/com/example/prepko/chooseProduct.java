@@ -83,7 +83,8 @@ public class chooseProduct extends AppCompatActivity {
 
         Button btn = new Button(this);
         btn.setText("Purchase");
-        btn.setBackgroundColor(Color.RED);
+        btn.setBackgroundColor(Color.parseColor("#f39c12"));
+        btn.setTextColor(Color.WHITE);
         setButtonAttributes(btn);
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -136,9 +137,7 @@ public class chooseProduct extends AppCompatActivity {
                 if(!ok)
                     Toast.makeText(getBaseContext(), "You Must Choose Products", Toast.LENGTH_LONG).show();
                 Purchase();
-                /*if(answerYesDialog){
-                    Purchase();
-                }*/
+
             }
         });
         buttonLayout.addView(btn);
@@ -199,18 +198,18 @@ public class chooseProduct extends AppCompatActivity {
             linearLayout.addView(imageView);
             i++;
             addTextView("" + img.picCode, false);
-            addTextView("desc" + ":", true);
+            addTextView("meal description" + ":", true);
             addTextView(img.desc, true);
-            addTextView("price" + ":", true);
+            addTextView("meal price" + ":", true);
             addTextView(img.price, true);
             addKmt();
             addLineSeperator();
         }
     }
     private void addKmt() {
-        addButton("-");
+        addButton("remove from cart");
         addTextView("0",true);
-        addButton("+");
+        addButton("add to cart");
 
     }
     private void addButton(final String ch) {
@@ -221,6 +220,8 @@ public class chooseProduct extends AppCompatActivity {
 
         Button btn = new Button(this);
         //btn.setTag(imgName+"Btn");
+        btn.setTextColor(Color.WHITE);
+        btn.setBackgroundColor(Color.parseColor("#f39c12"));
         btn.setId(i);
         btn.setText(ch);
         setButtonAttributes(btn);
@@ -230,7 +231,7 @@ public class chooseProduct extends AppCompatActivity {
                 //String imageName=view.getTag().toString();
                 //Toast.makeText(getBaseContext(),imageName , Toast.LENGTH_LONG).show();
                 int id=view.getId();
-                if(ch.equals("+"))
+                if(ch.equals("add to cart"))
                     addProduct(id);
                 else
                     removeProduct(id);

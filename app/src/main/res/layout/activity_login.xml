@@ -55,7 +55,9 @@
         android:layout_marginEnd="48dp"
         android:layout_marginBottom="64dp"
 
+        android:background="#FF9800"
         android:text="@string/action_sign_in"
+        android:textColor="#F7EDED"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -72,8 +74,10 @@
         android:layout_marginEnd="48dp"
         android:layout_marginBottom="64dp"
 
+        android:background="#FF9800"
         android:onClick="NavigateSignUp"
         android:text="@string/action_sign_up"
+        android:textColor="#F7F2F2"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

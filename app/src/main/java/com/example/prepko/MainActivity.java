@@ -109,19 +109,13 @@ public class MainActivity extends AppCompatActivity {
         startActivity(browserIntent);
     }
     public void NavigateInstagram(View view) {
-       /* Log.w(TAG, "NavigateInstagram");
+        Log.w(TAG, "NavigateInstagram");
         Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.instagram.com/prepkosher/"));
-        startActivity(browserIntent);*/
+        startActivity(browserIntent);
+    }
 
-        /*if (ContextCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE)
-                != PackageManager.PERMISSION_GRANTED) {
-            // Permission is not granted
-        }else {
-            String phone = "+972544390155";
-            Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + "+972544390155"));
-            startActivity(intent);
-        }*/
-
+    public void NavigatePhone(View view)
+    {
         if (ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.CALL_PHONE},1);
         }
@@ -132,6 +126,10 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
         }
     }
+
+
+
+
 }
 
 

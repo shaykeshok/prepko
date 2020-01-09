@@ -67,22 +67,7 @@ public class Login extends AppCompatActivity {
         String password = _password.getText().toString();
         Log.d(TAG, "Auth");
         auth(email,password);
-       /* if(!isExistUser){
-            onLoginFailed();
-            progressDialog.dismiss();
-            return;
-        }
 
-        new android.os.Handler().postDelayed(
-                new Runnable() {
-                    public void run() {
-
-                        // On complete call either onLoginSuccess or onLoginFailed
-                        onLoginSuccess();
-                        // onLoginFailed();
-                        progressDialog.dismiss();
-                    }
-                }, 3000);*/
     }
 
     private void auth(final String email,final String pass) {
