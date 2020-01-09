@@ -1,6 +1,5 @@
 package com.example.prepko;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.AlertDialog;
@@ -21,14 +20,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
-import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -60,8 +53,7 @@ public class chooseProduct extends AppCompatActivity {
     private boolean useCredit;
     DatabaseReference rootRef ;
     String userID;
-    boolean haveCreditDetails;
-    private boolean answerYesDialog;
+    //private boolean answerYesDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,7 +62,7 @@ public class chooseProduct extends AppCompatActivity {
 
         SharedPreferences loginSettings = getSharedPreferences("LoginPreferences", MODE_PRIVATE);
         userID=loginSettings.getString("UserID","guest");
-        haveCreditDetails=loginSettings.getBoolean("UserHaveCreditDetails",false);
+        //haveCreditDetails=loginSettings.getBoolean("UserHaveCreditDetails",false);
         imageView=findViewById(R.id.image);
         Task<ListResult> a = storageRef.listAll();
 
@@ -96,7 +88,7 @@ public class chooseProduct extends AppCompatActivity {
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                answerYesDialog=false;
+                //answerYesDialog=false;
                 ok = false;
                 Task<QuerySnapshot> a = db.collection("orders").get();
                 while (!a.isSuccessful()) {
@@ -111,7 +103,7 @@ public class chooseProduct extends AppCompatActivity {
                             //Purchase();
                             useCredit=false;
                             Log.d(TAG, "go to Purchase");
-                            if(haveCreditDetails) {
+                            if(haveCreditDetails()) {
                                 //Toast.makeText(getBaseContext(), "Sign Up success", Toast.LENGTH_LONG).show();
                                 new AlertDialog.Builder(view.getContext())
                                         .setTitle("Update data")
@@ -120,7 +112,7 @@ public class chooseProduct extends AppCompatActivity {
                                         // The dialog is automatically dismissed when a dialog button is clicked.
                                         .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                                             public void onClick(DialogInterface dialog, int which) {
-                                                updateCreditDetails();
+                                                //updateCreditDetails();
                                                 useCredit = true;
                                                 //answerYesDialog=true;
                                                 //Purchase();
@@ -151,8 +143,20 @@ public class chooseProduct extends AppCompatActivity {
         });
         buttonLayout.addView(btn);
     }
+    private boolean haveCreditDetails() {
 
+        Task<DocumentSnapshot> a = db.collection("users").document(userID).get();
+        while (!a.isSuccessful()) {
+        }
 
+        DocumentSnapshot document = a.getResult();
+        if (document.exists())
+            if (!document.get("CreditNum").toString().equals("") && !document.get("cvv").toString().equals("")
+                    && !document.get("validity").toString().equals("") && !document.get("cardID").toString().equals(""))
+                return true;
+
+        return false;
+    }
     public void Purchase () {
         Intent intent = new Intent(this, Purchase.class);
         intent.putExtra("OrderID",OrderID);
@@ -160,11 +164,11 @@ public class chooseProduct extends AppCompatActivity {
         startActivity(intent);
         //finish();
     }
-
+/*
     private void updateCreditDetails() {
         Map<String, Object> creditDetails = new HashMap<>();
 
-        Task<DocumentSnapshot> a = db.collection("users").document(OrderID).get();
+        Task<DocumentSnapshot> a = db.collection("users").document(userID).get();
         while (!a.isSuccessful()) { }
 
         DocumentSnapshot document = a.getResult();
@@ -184,7 +188,7 @@ public class chooseProduct extends AppCompatActivity {
             db.collection("orders").document(doc.getId()).update(creditDetails);
         }
     }
-
+*/
     public void pushLst(String url,String imgName) {
         Image img = new Image(imgName);
         if (img.showImg) {
@@ -203,7 +207,6 @@ public class chooseProduct extends AppCompatActivity {
             addLineSeperator();
         }
     }
-
     private void addKmt() {
         addButton("-");
         addTextView("0",true);
@@ -237,7 +240,6 @@ public class chooseProduct extends AppCompatActivity {
         buttonLayout.addView(btn);
         i++;
     }
-
     private void removeProduct(int id) {
         TextView kmtLbl = (TextView) findViewById(id + 1);
         int kmtVal = parseInt(kmtLbl.getText().toString());
@@ -252,7 +254,6 @@ public class chooseProduct extends AppCompatActivity {
             }
         }
     }
-
     private void deleteRow(int kmtVal, int id) {
         int PicCode=parseInt((((TextView) findViewById(id - 5)).getText()).toString());
         Task<QuerySnapshot> a = db.collection("orders").get();
@@ -270,7 +271,6 @@ public class chooseProduct extends AppCompatActivity {
         db.collection("orders").document(OrderIDNewRaw).delete();
 
     }
-
     private void addProduct(int id) {
         TextView kmtLbl = (TextView) findViewById(id - 1);
         int kmtVal = parseInt(kmtLbl.getText().toString());
@@ -282,7 +282,6 @@ public class chooseProduct extends AppCompatActivity {
         else
             updateOrder(kmtVal,id,1);
     }
-
     private void updateOrder(int kmtVal, int id,int sug) {
         int PicCode;
         if(sug==1)
@@ -315,24 +314,22 @@ public class chooseProduct extends AppCompatActivity {
         //order.put("price",price);
         db.collection("orders").document(OrderIDNewRaw).update(order);
     }
-
-
     private void addNewOrder(int kmtVal, int id) {
         int PicCode=parseInt((((TextView) findViewById(id - 7)).getText()).toString());
         int price=parseInt((((TextView) findViewById(id - 3)).getText()).toString());
         // Create a new order
         Map<String, Object> order = new HashMap<>();
-        order.put("dtOrder", new Date());
+        //order.put("dtOrder", new Date());
         order.put("PicCode",PicCode) ;
         order.put("kmt",1);
         if(!OrderID.equals(""))
             order.put("idKlali",OrderID);
         else
             order.put("idKlali","");
-        order.put("done",false);
+        //order.put("done",false);
         order.put("price",price);
 
-        order.put("userID", userID);
+        //order.put("userID", userID);
 
         Task<DocumentReference> a = db.collection("orders").add(order);
         while (!a.isSuccessful()) { }
@@ -344,9 +341,6 @@ public class chooseProduct extends AppCompatActivity {
         }
         OrderIDNewRaw=a.getResult().getId();
     }
-
-
-
     private void addTextView(String txt,boolean show) {
         //Adding a LinearLayout with HORIZONTAL orientation
         LinearLayout textLinearLayout = new LinearLayout(this);
@@ -363,7 +357,6 @@ public class chooseProduct extends AppCompatActivity {
         textLinearLayout.addView(textView);
         i++;
     }
-
     private void setButtonAttributes(Button btn) {
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
@@ -390,14 +383,11 @@ public class chooseProduct extends AppCompatActivity {
         textView.setTextColor(Color.BLACK);
         textView.setLayoutParams(params);
     }
-
-    //This function to convert DPs to pixels
     private int convertDpToPixel(float dp) {
         DisplayMetrics metrics = Resources.getSystem().getDisplayMetrics();
         float px = dp * (metrics.densityDpi / 160f);
         return Math.round(px);
     }
-
     private void addLineSeperator() {
         LinearLayout lineLayout = new LinearLayout(this);
         lineLayout.setBackgroundColor(Color.GRAY);
