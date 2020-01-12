@@ -18,17 +18,19 @@
             android:gravity="bottom"
             android:orientation="vertical"
             tools:context=".Orders" >
-        </LinearLayout>
-    </ScrollView>
-    <TableLayout
-        android:id="@+id/tbl"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
-        <TableRow
-            android:id="@+id/tblRow"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            <TableLayout
+                android:id="@+id/tbl"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <TableRow
+                    android:id="@+id/tblRow"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
-        </TableRow>
-    </TableLayout>
+                </TableRow>
+            </TableLayout>
+        </LinearLayout>
+
+    </ScrollView>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

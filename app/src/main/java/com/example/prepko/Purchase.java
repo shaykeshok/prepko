@@ -14,6 +14,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -44,7 +45,7 @@ public class Purchase extends AppCompatActivity {
     String userID;
     private StorageReference storageRef= FirebaseStorage.getInstance().getReference();
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
-
+    DatabaseReference rootRef ;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -148,19 +149,20 @@ public class Purchase extends AppCompatActivity {
 
     private void buildFinalOrder() {
         Map<String, Object> creditDetails = new HashMap<>();
-        Map<Object, Object> products = new HashMap<>();
+        Map<String, Object> products = new HashMap<>();
         Map<String, Object> order = new HashMap<>();
-        int picCode, price, kmt;
+        long price, kmt;
+        String picCode;
         int sumOrder = 0;
         Task<QuerySnapshot> b = db.collection("orders").whereEqualTo("idKlali", orderID).get();
 
         while (!b.isSuccessful()) {
         }
         for (QueryDocumentSnapshot doc : b.getResult()) {
-            Map<String, Integer> oneProduct = new HashMap<>();
-            picCode = (int) doc.getData().get("PicCode");
-            price = (int) doc.getData().get("price");
-            kmt = (int) doc.getData().get("kmt");
+            Map<String, Long> oneProduct = new HashMap<>();
+            picCode = doc.getData().get("PicCode").toString();
+            price = (long) doc.getData().get("price");
+            kmt = (long) doc.getData().get("kmt");
             oneProduct.put("kmt", kmt);
             oneProduct.put("price", price);
             sumOrder += kmt * price;
@@ -197,47 +199,21 @@ public class Purchase extends AppCompatActivity {
         order.put("dtOrder", new Date());
         order.put("sumOrder", sumOrder);
         order.put("userId", userID);
+        order.put("orderId", orderID);
         db.collection("ordersFinal").document(orderID).set(order);
-        //Task<DocumentReference> a = db.collection("orders").add(order);
+        deleteDocuments();
+        finish();
 
+    }
 
-       /* Task<QuerySnapshot> a = db.collection("orders").get();
-        while (!a.isSuccessful()) {
+    private void deleteDocuments() {
+        Task<QuerySnapshot> b = db.collection("orders").whereEqualTo("idKlali", orderID).get();
+
+        while (!b.isSuccessful()) {
         }
-        for (QueryDocumentSnapshot document : a.getResult()) {
-            Log.d("updateOrders", document.getId() + " => " + document.getData());
-            Object temp = document.getData().get("idKlali");
-            if (temp != null) {
-                if (temp.equals(orderID)) {
-                    Map<String, Object> orderDetails = new HashMap<>();
-                    if (!useCredit) {
-                        String full_name = _full_name.getText().toString();
-                        String cardID = _cardID.getText().toString();
-                        String CreditNum = _CreditNum.getText().toString();
-                        String validity = _validity.getText().toString();
-                        String cvv = _cvv.getText().toString();
-                        orderDetails.put("cardID", cardID);
-                        orderDetails.put("fullname", full_name);
-                        orderDetails.put("CreditNum", CreditNum);
-                        orderDetails.put("validity", validity);
-                        orderDetails.put("cvv", cvv);
-
-                    }
-                    String email = _email.getText().toString();
-                    String address = _address.getText().toString();
-                    String phone = _phone.getText().toString();
-                    String deliverWhen = _deliverWhen.getText().toString();
-
-                    orderDetails.put("email", email);
-                    orderDetails.put("address", address);
-                    orderDetails.put("phone", phone);
-                    orderDetails.put("deliverWhen", deliverWhen);
-                    db.collection("orders").document(document.getId()).update(orderDetails);
-                }
-
-
-            }
-        }*/
+        for (QueryDocumentSnapshot doc : b.getResult()) {
+            db.collection("orders").document(doc.getId()).delete();
+        }
     }
 
     private Map<String, Object> getUserCreditDetails(String userID) {

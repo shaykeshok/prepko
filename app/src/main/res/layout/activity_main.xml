@@ -8,50 +8,40 @@
     tools:context=".MainActivity"
     tools:visibility="visible">
 
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/rootRL"
-        android:orientation="vertical"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:background="@drawable/background">
-    </RelativeLayout>
-
-
     <Button
         android:id="@+id/mealBtn"
-        android:layout_width="112dp"
-        android:layout_height="41dp"
+        android:layout_width="80dp"
+        android:layout_height="43dp"
         android:layout_marginStart="142dp"
         android:layout_marginLeft="142dp"
-        android:layout_marginTop="275dp"
+        android:layout_marginTop="422dp"
         android:layout_marginEnd="142dp"
         android:layout_marginRight="142dp"
         android:layout_marginBottom="261dp"
-        android:background="#F3F0ED"
+        android:background="#FF9800"
         android:onClick="Navigate"
         android:text="meal plans"
-        android:textColor="#201A10"
+        android:textColor="#ECEAE7"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.511"
+        app:layout_constraintHorizontal_bias="0.489"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintVertical_bias="1.0" />
 
     <Button
         android:id="@+id/aboutBtn"
-        android:layout_width="112dp"
-        android:layout_height="41dp"
+        android:layout_width="80dp"
+        android:layout_height="43dp"
         android:layout_marginStart="142dp"
         android:layout_marginLeft="142dp"
         android:layout_marginEnd="142dp"
         android:layout_marginRight="142dp"
-        android:layout_marginBottom="368dp"
-        android:background="#F7F4F0"
+        android:layout_marginBottom="340dp"
+        android:background="#FF9800"
         android:onClick="Navigate"
         android:text="About Us"
-        android:textColor="#1D1811"
-        android:textColorHint="#1F0C0C"
+        android:textColor="#ECEAE7"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.489"
@@ -59,44 +49,43 @@
 
     <Button
         android:id="@+id/signinBtn"
-        android:layout_width="112dp"
-        android:layout_height="41dp"
+        android:layout_width="80dp"
+        android:layout_height="43dp"
         android:layout_marginStart="142dp"
         android:layout_marginLeft="142dp"
         android:layout_marginEnd="142dp"
         android:layout_marginRight="165dp"
-        android:layout_marginBottom="204dp"
-        android:background="#F7F5F2"
+        android:layout_marginBottom="160dp"
+        android:background="#FF9800"
         android:onClick="NavigateLogin"
         android:shadowColor="#ECEAE7"
         android:text="Sign in"
-        android:textColor="#160808"
+        android:textColor="#F3ECEC"
         android:textColorHighlight="#F5F5F5"
         android:textColorHint="#EAEBF3"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.487"
+        app:layout_constraintHorizontal_bias="0.489"
         app:layout_constraintStart_toStartOf="parent" />
-
     <Button
         android:id="@+id/Administrator"
-        android:layout_width="112dp"
-        android:layout_height="41dp"
+        android:layout_width="120dp"
+        android:layout_height="43dp"
         android:layout_marginStart="142dp"
         android:layout_marginLeft="142dp"
         android:layout_marginEnd="142dp"
         android:layout_marginRight="165dp"
-        android:layout_marginBottom="120dp"
-        android:background="#F3F0EC"
+        android:layout_marginBottom="100dp"
+        android:background="#FF9800"
         android:onClick="Navigate"
         android:shadowColor="#ECEAE7"
         android:text="Administrator"
-        android:textColor="#291111"
+        android:textColor="#F3ECEC"
         android:textColorHighlight="#F5F5F5"
         android:textColorHint="#EAEBF3"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.428"
+        app:layout_constraintHorizontal_bias="0.489"
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
@@ -107,7 +96,7 @@
         android:layout_marginLeft="142dp"
         android:layout_marginEnd="142dp"
         android:layout_marginRight="165dp"
-        android:layout_marginBottom="112dp"
+        android:layout_marginBottom="92dp"
         android:background="#FF9800"
         android:onClick="NavigateSignUp"
         android:shadowColor="#ECEAE7"
@@ -118,22 +107,19 @@
         android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.553"
+        app:layout_constraintHorizontal_bias="0.489"
         app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/textView2"
-        android:layout_width="322dp"
-        android:layout_height="77dp"
-        android:layout_marginTop="40dp"
-        android:text="kosher cooking, deliverd"
-        android:textColor="#F2F3F7"
-        android:textColorHighlight="#FF9800"
-        android:textColorHint="#FF9800"
-        android:textSize="24sp"
-        android:textStyle="bold"
+        android:layout_width="319dp"
+        android:layout_height="47dp"
+        android:layout_marginTop="16dp"
+        android:text="kosher cooking,deliverd"
+        android:textColor="#FF9900"
+        android:textSize="22sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.608"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -162,47 +148,33 @@
         android:id="@+id/facebook"
         android:layout_width="152dp"
         android:layout_height="43dp"
-        android:layout_marginTop="557dp"
+        android:layout_marginBottom="3dp"
         android:onClick="NavigateFacebook"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/facebook" />
+        app:srcCompat="@drawable/facebook"
+        tools:layout_editor_absoluteY="557dp" />
 
     <ImageView
         android:id="@+id/twitter"
         android:layout_width="43dp"
         android:layout_height="44dp"
-        android:layout_marginTop="556dp"
-        android:onClick="NavigatePhone"
+        android:layout_marginBottom="3dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.481"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/twitter" />
+        app:srcCompat="@drawable/twitter"
+        tools:layout_editor_absoluteY="556dp" />
 
     <ImageView
         android:id="@+id/instagram"
         android:layout_width="97dp"
         android:layout_height="45dp"
-        android:layout_marginTop="556dp"
         android:layout_marginEnd="36dp"
         android:layout_marginRight="36dp"
+        android:layout_marginBottom="3dp"
         android:onClick="NavigateInstagram"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/instagram" />
-
-    <TextView
-        android:id="@+id/textView4"
-        android:layout_width="127dp"
-        android:layout_height="35dp"
-        android:layout_marginStart="140dp"
-        android:layout_marginLeft="140dp"
-        android:layout_marginTop="496dp"
-        android:text="   Follow  "
-        android:textColor="#F0EEEB"
-        android:textSize="30sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:srcCompat="@drawable/instagram"
+        tools:layout_editor_absoluteY="556dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

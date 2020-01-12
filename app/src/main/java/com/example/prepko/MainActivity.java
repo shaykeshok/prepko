@@ -83,7 +83,7 @@ public class MainActivity extends AppCompatActivity {
         Intent intent;
         switch (btnName){
             case "aboutBtn":
-                intent = new Intent(this, About.class);
+                intent = new Intent(this, Orders.class);
                 break;
             case "Administrator":
                 intent = new Intent(this, AdminMain.class);

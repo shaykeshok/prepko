@@ -4,96 +4,78 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.res.Resources;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
-import android.view.View;
 import android.widget.LinearLayout;
-import android.widget.TableLayout;
-import android.widget.TableRow;
 import android.widget.TextView;
+
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.Timestamp;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Orders extends AppCompatActivity {
     LinearLayout linearLayout;
-
+    public FirebaseFirestore db = FirebaseFirestore.getInstance();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_orders);
+        linearLayout = findViewById(R.id.linear_layout);
         addLstOrders();
-       /* TableLayout orders = (TableLayout)findViewById(R.id.tbl);
-        orders.setStretchAllColumns(true);
-        orders.bringToFront();
-        addTitles(orders);
-        for(int i = 0; i < 4; i++){
-            TableRow tr =  new TableRow(this);
-            TextView c1 = new TextView(this);
-            c1.setText("Date");
-            TextView c2 = new TextView(this);
-            c2.setText("What");
-            TextView c3 = new TextView(this);
-            c3.setText("where");
-            tr.addView(c1);
-            tr.addView(c2);
-            tr.addView(c3);
-            orders.addView(tr);
-        }*/
+
     }
 
     private void addLstOrders() {
-        addOneOrder();
+
+        Task<QuerySnapshot> a = db.collection("ordersFinal").get();
+
+        while (!a.isSuccessful()) {
+        }
+        for (QueryDocumentSnapshot doc : a.getResult()) {
+
+            String str="";
+            Map<Object,Object> hash=(HashMap)doc.getData().get("products");
+            for(Map.Entry<Object, Object> entry : hash.entrySet()) {
+                str+= (String)entry.getKey();
+                HashMap values = (HashMap)entry.getValue();
+                for(Object value : values.entrySet()) {
+                    str+= "--> ";
+                    str+=value.toString();
+
+
+                }
+                str+="\r\n";
+            }
+            addOnePiece("products: ",str);
+            Date date = ((Timestamp)doc.getData().get("dtOrder")).toDate();
+            addOnePiece("Order Date: ", date.toString());
+            addOnePiece("Address To Deliver: ", doc.getData().get("address").toString());
+            addOnePiece("When To Deliver? ", doc.getData().get("deliverWhen").toString());
+            addOnePiece("Order's Name: ", doc.getData().get("fullname").toString());
+            addOnePiece("Phone: ", doc.getData().get("phone").toString());
+            addOnePiece("Email: ", doc.getData().get("email").toString());
+            addOnePiece("Product- ", doc.getData().get("email").toString());
+            addOnePiece("Sum of Order: ", doc.getData().get("sumOrder").toString());
+            addLineSeperator();
+        }
+    }
+    private void addOnePiece(String key,String val) {
+        addTextView(key,true);
+        addTextView(val,false);
+
     }
 
-    private void addOneOrder() {
-        TableLayout orders = (TableLayout) findViewById(R.id.tbl);
-        orders.setStretchAllColumns(true);
-        orders.bringToFront();
-        TableRow tr = new TableRow(this);
-        TextView c1 = new TextView(this);
-        c1.setText("Date");
-        TextView c2 = new TextView(this);
-        c2.setText("date");
-        TextView c3 = new TextView(this);
-        c3.setText("where");
-        tr.addView(c1);
-        tr.addView(c2);
-        tr.addView(c3);
-        orders.addView(tr);
-        /*for (int i = 0; i < 4; i++) {
-            TableRow tr = new TableRow(this);
-            TextView c1 = new TextView(this);
-            c1.setText("Date");
-            TextView c2 = new TextView(this);
-            c2.setText("What");
-            TextView c3 = new TextView(this);
-            c3.setText("where");
-            tr.addView(c1);
-            tr.addView(c2);
-            tr.addView(c3);
-            orders.addView(tr);
-        }*/
-    }
 
-    /*private void addTitles(TableLayout orders) {
-        TableRow tr =  new TableRow(this);
-        TextView c1 = new TextView(this);
-        c1.setText("Date");
-        TextView c2 = new TextView(this);
-        c2.setText("Desc");
-        TextView c3 = new TextView(this);
-        c3.setText("Pieces");
-        TextView c4 = new TextView(this);
-        c4.setText("Where To Deliver?");
-        TextView c5 = new TextView(this);
-        c5.setText("Full Name");
-        tr.addView(c1);
-        tr.addView(c2);
-        tr.addView(c3);
-        tr.addView(c4);
-        tr.addView(c5);
-        orders.addView(tr);
-    }*/
 
-    private void addTextView(String txt,boolean show) {
+
+    private void addTextView(String txt,boolean bold) {
         //Adding a LinearLayout with HORIZONTAL orientation
         LinearLayout textLinearLayout = new LinearLayout(this);
         textLinearLayout.setOrientation(LinearLayout.HORIZONTAL);
@@ -102,12 +84,10 @@ public class Orders extends AppCompatActivity {
 
         TextView textView = new TextView(this);
         textView.setText(txt);
-        //textView.setId(i);
         setTextViewAttributes(textView);
-        if(!show)
-            textView.setVisibility(View.INVISIBLE);
+        if(bold)
+            textView.setTypeface(null, Typeface.BOLD );
         textLinearLayout.addView(textView);
-        //i++;
     }
     private void setTextViewAttributes(TextView textView) {
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
