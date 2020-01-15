@@ -1,16 +1,15 @@
 package com.example.prepko;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.ProgressDialog;
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -45,9 +44,13 @@ public class signUp extends AppCompatActivity {
         signUpBtn = (Button) findViewById(R.id.signUpBtn);
         _phone = (TextView) findViewById(R.id.phone);
         _fullname = (TextView) findViewById(R.id.full_name);
+
         _email = (TextView) findViewById(R.id.username);
+
         _password = (TextView) findViewById(R.id.password);
+
         _RepeatPassword = (TextView) findViewById(R.id.RepeatPassword);
+
         signUpBtn.setOnClickListener(new View.OnClickListener() {
 
             @Override

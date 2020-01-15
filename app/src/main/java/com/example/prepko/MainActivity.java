@@ -1,8 +1,5 @@
 package com.example.prepko;
 
-import androidx.appcompat.app.AppCompatActivity;
-
-
 import android.Manifest;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -12,18 +9,12 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FirebaseFirestore;
-
-import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+
+import com.google.firebase.firestore.FirebaseFirestore;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -32,6 +23,8 @@ public class MainActivity extends AppCompatActivity {
     public FirebaseFirestore db = FirebaseFirestore.getInstance();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         SharedPreferences loginSettings = getSharedPreferences("LoginPreferences", MODE_PRIVATE);
@@ -51,31 +44,6 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    /*public void sendMessage(View view){
-        Log.w(TAG, "Its work");
-        Intent intent = new Intent(this, About.class);
-        startActivity(intent);
-        Log.d(TAG, "main activity load");
-//Toast.makeText(getBaseContext(), "main activity load", Toast.LENGTH_LONG).show();
-
-        DocumentReference docRef = db.collection("param").document("W8GT0yCRTfnyMSho6e0o");
-        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()) {
-                    DocumentSnapshot document = task.getResult();
-                    if (document.exists()) {
-                        Log.d(TAG, "DocumentSnapshot data: " + document.get("aboutTxt"));
-                        //Log.d(TAG, "DocumentSnapshot data: " + document.getData());
-                    } else {
-                        Log.d(TAG, "No such document");
-                    }
-                } else {
-                    Log.d(TAG, "get failed with ", task.getException());
-                }
-            }
-        });
-    }*/
     public void Navigate(View view) {
         Log.w(TAG, "Its work");
 
@@ -83,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
         Intent intent;
         switch (btnName){
             case "aboutBtn":
-                intent = new Intent(this, Orders.class);
+                intent = new Intent(this, About.class);
                 break;
             case "Administrator":
                 intent = new Intent(this, AdminMain.class);
@@ -98,10 +66,15 @@ public class MainActivity extends AppCompatActivity {
         finish();
         startActivity(intent);
     }
-    public void NavigateLogin(View view) {
-        Log.w(TAG, "Its work");
-        Intent intent = new Intent(this, Login.class);
-        startActivity(intent);
+    public void NavigateLogin(View view)
+    {
+        if(Login.login_help == false)
+        {
+            Log.w(TAG, "Its work");
+            Intent intent = new Intent(this, Login.class);
+            startActivity(intent);
+        }
+
     }
     public void NavigateFacebook(View view) {
         Log.w(TAG, "NavigateFacebook");
@@ -127,20 +100,4 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-
-
-
 }
-
-
-
-    /*
-    button.setOnClickListener(new View.OnClickListener() {
-        @Override
-        public void onClick(View view) {
-            //code
-        }
-    });
-}
-
-     */

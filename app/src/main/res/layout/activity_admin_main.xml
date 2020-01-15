@@ -9,31 +9,27 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:layout_editor_absoluteX="26dp"
-        tools:layout_editor_absoluteY="0dp">
+        tools:layout_editor_absoluteX="-72dp"
+        tools:layout_editor_absoluteY="40dp">
 
         <LinearLayout
             android:id="@+id/linear_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="bottom"
+            android:orientation="vertical"
             tools:context=".MainActivity">
 
             <ImageView
                 android:id="@+id/image"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
-                android:scaleType="fitXY" />
+                android:scaleType="fitXY" /><![CDATA[
 
-            <TextView
-                android:id="@+id/textView6"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="welcom back administrator"
-                android:textColor="#FF9800"
-                android:textSize="18sp" /><![CDATA[
+
 
             />
+
         ]]>
         </LinearLayout>
     </ScrollView>

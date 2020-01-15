@@ -1,23 +1,27 @@
 package com.example.prepko;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+
+//import android.support.v7.app.ActionBarActivity;
+
 
 public class Login extends AppCompatActivity {
     private static final String TAG = "LoginActivity";
@@ -26,9 +30,12 @@ public class Login extends AppCompatActivity {
     Button loginButton;
     public FirebaseFirestore db = FirebaseFirestore.getInstance();
     private boolean isExistUser;
+    public  static boolean login_help = false;
     public ProgressDialog progressDialog;
     private String userId="";
     boolean isAdmin=false;
+    private int progressStatus = 0;
+    private Handler handler = new Handler();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,7 +53,8 @@ public class Login extends AppCompatActivity {
             }
         });
     }
-    public void NavigateSignUp(View view) {
+    public void NavigateSignUp(View view)
+    {
         Log.w(TAG, "Its work");
         Intent intent = new Intent(this, signUp.class);
         startActivity(intent);
@@ -57,11 +65,16 @@ public class Login extends AppCompatActivity {
             onLoginFailed();
             return;
         }
-        progressDialog = new ProgressDialog(Login.this,
-                R.style.AppTheme);
+
+        progressDialog = new ProgressDialog(Login.this, R.style.Theme_AppCompat_DayNight_Dialog);
         progressDialog.setIndeterminate(true);
-        progressDialog.setMessage("Authenticating...");
+        progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+        progressDialog.setIcon(R.drawable.background);
+        progressDialog.setProgressStyle(R.style.TextAppearance_AppCompat_Large);
+        progressDialog.setTitle("Please wait");
+        progressDialog.setMessage("preparing the recipes...");
         progressDialog.show();
+
 
         String email = _email.getText().toString();
         String password = _password.getText().toString();
@@ -120,8 +133,9 @@ public class Login extends AppCompatActivity {
     }
 
     public void onLoginSuccess() {
-        Log.d(TAG, "Login success");
 
+        Log.d(TAG, "Login success");
+        login_help = true ;
         SharedPreferences loginSettings = getSharedPreferences("LoginPreferences", MODE_PRIVATE);
         SharedPreferences.Editor prefEditor = loginSettings.edit();
         prefEditor.putString("userId", userId);
