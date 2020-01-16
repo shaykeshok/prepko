@@ -1,6 +1,7 @@
 package com.example.prepko;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -101,12 +102,16 @@ public class signUp extends AppCompatActivity {
             Log.d(TAG, "Sign Up failed");
             Toast.makeText(getBaseContext(), "Sign Up failed- User exist", Toast.LENGTH_LONG).show();
             signUpBtn.setEnabled(true);
+            finish();
         }
 
         @Override
         public void onBackPressed () {
             // Disable going back to the MainActivity
-            moveTaskToBack(true);
+            Intent intent = new Intent(this, Login.class);
+            intent.putExtra("fromLogin",true);
+            startActivity(intent);
+            finish();
         }
 
         public boolean validate(){

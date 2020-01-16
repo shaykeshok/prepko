@@ -81,9 +81,16 @@ public class MainActivity extends AppCompatActivity {
         Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.facebook.com/prepkosher/"));
         startActivity(browserIntent);
     }
+
     public void NavigateInstagram(View view) {
         Log.w(TAG, "NavigateInstagram");
         Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.instagram.com/prepkosher/"));
+        startActivity(browserIntent);
+    }
+
+    public void Navigateyoutube(View view) {
+        Log.w(TAG, "Navigateyoutube");
+        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.youtube.com/watch?v=LoyDuwA9CFE"));
         startActivity(browserIntent);
     }
 
