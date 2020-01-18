@@ -11,7 +11,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ParamUPD"></activity>
+
+        <activity android:name=".ParamUPD" />
         <activity android:name=".Orders" />
         <activity android:name=".AdminMain" />
         <activity android:name=".Purchase" />
