@@ -119,6 +119,7 @@ public class Purchase extends AppCompatActivity {
                 Toast.makeText(getBaseContext(), "Purchase Success", Toast.LENGTH_LONG).show();
                 Intent intent = new Intent(this, MainActivity.class);
                 startActivity(intent);
+                finish();
 
             }
 
@@ -200,7 +201,6 @@ public class Purchase extends AppCompatActivity {
         order.put("orderId", orderID);
         db.collection("ordersFinal").document(orderID).set(order);
         deleteDocuments();
-        finish();
 
     }
 
