@@ -2,6 +2,7 @@ package com.example.prepko;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -23,38 +24,51 @@ import java.util.Map;
 public class Orders extends AppCompatActivity {
     LinearLayout linearLayout;
     public FirebaseFirestore db = FirebaseFirestore.getInstance();
+    boolean allorders=false;
+    private String userID;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_orders);
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            allorders = extras.getBoolean("allOrders", false);
+        }
+        SharedPreferences loginSettings = getSharedPreferences("LoginPreferences", MODE_PRIVATE);
+        userID=loginSettings.getString("UserID","guest");
         linearLayout = findViewById(R.id.linear_layout);
         addLstOrders();
 
     }
 
     private void addLstOrders() {
+        Task<QuerySnapshot> a;
+        if (allorders)
+            a = db.collection("ordersFinal").get();
+        else
+            a = db.collection("ordersFinal").whereEqualTo("userId", userID).get();
 
-        Task<QuerySnapshot> a = db.collection("ordersFinal").get();
 
         while (!a.isSuccessful()) {
         }
         for (QueryDocumentSnapshot doc : a.getResult()) {
 
-            String str="";
-            Map<Object,Object> hash=(HashMap)doc.getData().get("products");
-            for(Map.Entry<Object, Object> entry : hash.entrySet()) {
-                str+= (String)entry.getKey();
-                HashMap values = (HashMap)entry.getValue();
-                for(Object value : values.entrySet()) {
-                    str+= "--> ";
-                    str+=value.toString();
+            String str = "";
+            Map<Object, Object> hash = (HashMap) doc.getData().get("products");
+            for (Map.Entry<Object, Object> entry : hash.entrySet()) {
+                str += (String) entry.getKey();
+                HashMap values = (HashMap) entry.getValue();
+                for (Object value : values.entrySet()) {
+                    str += "--> ";
+                    str += value.toString();
 
 
                 }
-                str+="\r\n";
+                str += "\r\n";
             }
-            addOnePiece("products: ",str);
-            Date date = ((Timestamp)doc.getData().get("dtOrder")).toDate();
+            addOnePiece("products: ", str);
+            Date date = ((Timestamp) doc.getData().get("dtOrder")).toDate();
             addOnePiece("Order Date: ", date.toString());
             addOnePiece("Address To Deliver: ", doc.getData().get("address").toString());
             addOnePiece("When To Deliver? ", doc.getData().get("deliverWhen").toString());

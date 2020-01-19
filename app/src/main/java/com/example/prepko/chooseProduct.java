@@ -9,6 +9,9 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -49,16 +52,10 @@ public class chooseProduct extends AppCompatActivity {
     private boolean useCredit;
     DatabaseReference rootRef ;
     String userID;
+    private int loginItem;
     //private boolean answerYesDialog;
 
-    @Override
-    public void onBackPressed () {
-        // Disable going back to the MainActivity
-        Intent intent = new Intent(this, MainActivity.class);
-        intent.putExtra("fromLogin",true);
-        startActivity(intent);
-        finish();
-    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,56 +93,170 @@ public class chooseProduct extends AppCompatActivity {
             public void onClick(View view) {
                 //answerYesDialog=false;
                 ok = false;
-                Task<QuerySnapshot> a = db.collection("orders").get();
+                Task<QuerySnapshot> a = db.collection("orders").whereEqualTo("idKlali", OrderID).get();
                 while (!a.isSuccessful()) {
                 }
 
-                for (QueryDocumentSnapshot document : a.getResult()) {
-                    Log.d("image Class", document.getId() + " => " + document.getData());
+                //for (QueryDocumentSnapshot document : a.getResult()) {
+                if (a.getResult().size() > 0) {
+                 /*   Log.d("image Class", document.getId() + " => " + document.getData());
                     Object temp = document.getData().get("idKlali");
                     if (temp != null)
-                        if(temp.equals(OrderID)) {
-                            ok = true;
-                            //Purchase();
-                            useCredit=false;
-                            Log.d(TAG, "go to Purchase");
-                            if(haveCreditDetails()) {
-                                //Toast.makeText(getBaseContext(), "Sign Up success", Toast.LENGTH_LONG).show();
-                                new AlertDialog.Builder(view.getContext())
-                                        .setTitle("Update data")
-                                        .setMessage("Do you want to use the credit card information stored in the system?")
-                                        // Specifying a listener allows you to take an action before dismissing the dialog.
-                                        // The dialog is automatically dismissed when a dialog button is clicked.
-                                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                                            public void onClick(DialogInterface dialog, int which) {
-                                                //updateCreditDetails();
-                                                useCredit = true;
-                                                //answerYesDialog=true;
-                                                //Purchase();
-                                            }
-                                        })
+                        if(temp.equals(OrderID)) {*/
+                    ok = true;
+                    //Purchase();
+                    useCredit = false;
+                    Log.d(TAG, "go to Purchase");
+                    if (haveCreditDetails()) {
+                        //Toast.makeText(getBaseContext(), "Sign Up success", Toast.LENGTH_LONG).show();
+                        new AlertDialog.Builder(view.getContext())
+                                .setTitle("Update data")
+                                .setMessage("Do you want to use the credit card information stored in the system?")
+                                // Specifying a listener allows you to take an action before dismissing the dialog.
+                                // The dialog is automatically dismissed when a dialog button is clicked.
+                                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        //updateCreditDetails();
+                                        useCredit = true;
+                                        //answerYesDialog=true;
+                                        //Purchase();
+                                    }
+                                })
 
-                                        // A null listener allows the button to dismiss the dialog and take no further action.
-                                        .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
-                                            public void onClick(DialogInterface dialog, int which) {
-                                                //Purchase();
-                                            }
-                                        })
-                                        .setIcon(android.R.drawable.ic_dialog_alert)
-                                        .show();
-                            break;
-                            }else {
-                                break;
-                            }
-                        }
+                                // A null listener allows the button to dismiss the dialog and take no further action.
+                                .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        //Purchase();
+                                    }
+                                })
+                                .setIcon(android.R.drawable.ic_dialog_alert)
+                                .show();
+                        //break;
+                        //}else {
+                        //    break;
+                    }
                 }
-                if(!ok)
-                    Toast.makeText(getBaseContext(), "You Must Choose Products", Toast.LENGTH_LONG).show();
-                Purchase();
 
+                if (!ok)
+                    Toast.makeText(getBaseContext(), "You Must Choose Products", Toast.LENGTH_LONG).show();
+                else
+                    Purchase();
             }
         });
         buttonLayout.addView(btn);
+    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.floatmenu, menu);
+        return true;
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        // Handle item selection
+        Intent intent;
+        switch (item.getItemId()) {
+            case R.id.customer:
+                loginMenu();
+
+                return true;
+            case R.id.home:
+            case R.id.homeSub:
+                intent = new Intent(this, MainActivity.class);
+                startActivity(intent);
+                return true;
+            case R.id.about:
+                intent = new Intent(this, About.class);
+                startActivity(intent);
+                return true;
+            case R.id.mealPlans:
+                intent = new Intent(this, chooseProduct.class);
+                startActivity(intent);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+
+    private void loginMenu() {
+        String loginItems[];
+
+        if (userID.equals("guest"))
+            loginItems = new String[]{"Log In", "Sign Up"};
+        else
+            loginItems = new String[]{"My Orders", "Edit Credit Details", "Log Out"};
+        androidx.appcompat.app.AlertDialog.Builder builder = new androidx.appcompat.app.AlertDialog.Builder(chooseProduct.this);
+        builder.setTitle("Login Options")
+                .setItems(loginItems, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        // The 'which' argument contains the index position
+                        // of the selected item
+                        loginItem = which;
+                        switch (loginItem) {
+                            case 0:
+                                if (userID.equals("guest")) {
+                                    gotoIntent("Login");
+                                    //intent = new Intent(this, Login.class);
+
+                                } else {
+                                    //intent = new Intent(this, Orders.class);
+                                    //intent.putExtra("allOrders", false);
+                                    gotoIntent("Orders");
+                                }
+                                //startActivity(intent);
+                                break;
+                            case 1:
+                                if (userID.equals("guest")) {
+                                    //intent = new Intent(this, signUp.class);
+                                    gotoIntent("signUp");
+                                } else {
+                                    //intent = new Intent(this, MainActivity.class);
+                                    gotoIntent("MainActivity");
+                                }
+                                //startActivity(intent);
+                                break;
+                            case 2:
+                                if (!userID.equals("guest")) {
+                                    SharedPreferences loginSettings = getSharedPreferences("LoginPreferences", MODE_PRIVATE);
+                                    loginSettings.edit().clear().commit();
+                                    Toast.makeText(getBaseContext(),"Sign Out Success",Toast.LENGTH_LONG).show();
+                                    finish();
+                                    startActivity(getIntent());
+                                }
+                                break;
+                        }
+
+                    }
+                });
+        builder.show();
+    }
+
+    private void gotoIntent(String activity) {
+        Intent intent;
+        switch (activity){
+            case "Login":
+                intent = new Intent(this, Login.class);
+                break;
+            case "Orders":
+                intent = new Intent(this, Orders.class);
+                intent.putExtra("allOrders", false);
+                break;
+            case "signUp":
+                intent = new Intent(this, signUp.class);
+                break;
+            case "MainActivity":
+                intent = new Intent(this, MainActivity.class);
+                break;
+            default:
+                intent = new Intent(this, MainActivity.class);
+                break;
+        }
+        startActivity(intent);
+
+
     }
     private boolean haveCreditDetails() {
 
@@ -161,6 +272,14 @@ public class chooseProduct extends AppCompatActivity {
 
         return false;
     }
+    @Override
+    public void onBackPressed () {
+        // Disable going back to the MainActivity
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.putExtra("fromLogin",false);
+        startActivity(intent);
+        finish();
+    }
 
     public void Purchase () {
         Intent intent = new Intent(this, Purchase.class);
@@ -169,7 +288,6 @@ public class chooseProduct extends AppCompatActivity {
         startActivity(intent);
         //finish();
     }
-
     public void pushLst(String url,String imgName) {
         Image img = new Image(imgName);
         if (img.showImg) {

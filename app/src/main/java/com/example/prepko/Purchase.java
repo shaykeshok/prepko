@@ -128,9 +128,6 @@ public class Purchase extends AppCompatActivity {
         //finish();
     }
 
-    private void insertToUsersOrders() {
-
-    }
 
     private void SaveCreditDetails() {
         Map<String, Object> creditDetails = new HashMap<>();

@@ -90,6 +90,7 @@ public class AdminMain extends AppCompatActivity {
         switch (btnName) {
             case "Orders":
                 intent = new Intent(this, Orders.class);
+                intent.putExtra("allOrders",true);
                 break;
             case "UpdatePics":
                 intent = new Intent(this, Administrator.class);
