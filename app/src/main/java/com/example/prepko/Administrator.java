@@ -6,11 +6,15 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -49,12 +53,17 @@ public class Administrator extends AppCompatActivity {
     LinearLayout linearLayout;
     int i=0;
     View viewS ;
-
+    private int loginItem;
+    private String userID;
+boolean isAdmin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_administrator);
+        SharedPreferences loginSettings = getSharedPreferences("LoginPreferences", MODE_PRIVATE);
+        userID=loginSettings.getString("userId","guest");
+        isAdmin = loginSettings.getBoolean("isAdmin", false);
         //editText22 = new EditText(this);
         //LinearLayout editTextLayout = new LinearLayout(this);
         //int i=0;
@@ -81,6 +90,123 @@ public class Administrator extends AppCompatActivity {
                         // Uh-oh, an error occurred!
                     }
                 });
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.floatmenu, menu);
+        if(!isAdmin) {
+            MenuItem item = menu.findItem(R.id.Admin);
+            item.setVisible(false);
+        }
+        return true;
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        // Handle item selection
+        Intent intent;
+        switch (item.getItemId()) {
+            case R.id.customer:
+                loginMenu();
+
+                return true;
+            case R.id.home:
+            case R.id.homeSub:
+                intent = new Intent(this, MainActivity.class);
+                startActivity(intent);
+                return true;
+            case R.id.about:
+                intent = new Intent(this, About.class);
+                startActivity(intent);
+                return true;
+            case R.id.mealPlans:
+                intent = new Intent(this, chooseProduct.class);
+                startActivity(intent);
+                return true;
+            case R.id.Admin:
+                intent = new Intent(this, AdminMain.class);
+                startActivity(intent);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+
+    private void loginMenu() {
+        String loginItems[];
+
+        if (userID.equals("guest"))
+            loginItems = new String[]{"Log In", "Sign Up"};
+        else
+            loginItems = new String[]{"My Orders", "Edit Credit Details", "Log Out"};
+        androidx.appcompat.app.AlertDialog.Builder builder = new androidx.appcompat.app.AlertDialog.Builder(Administrator.this);
+        builder.setTitle("Login Options")
+                .setItems(loginItems, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        // The 'which' argument contains the index position
+                        // of the selected item
+                        loginItem = which;
+                        switch (loginItem) {
+                            case 0:
+                                if (userID.equals("guest")) {
+                                    gotoIntent("Login");
+
+                                } else {
+                                    gotoIntent("Orders");
+                                }
+                                break;
+                            case 1:
+                                if (userID.equals("guest")) {
+                                    gotoIntent("signUp");
+                                } else {
+                                    gotoIntent("MainActivity");
+                                }
+                                break;
+                            case 2:
+                                if (!userID.equals("guest")) {
+                                    SharedPreferences loginSettings = getSharedPreferences("LoginPreferences", MODE_PRIVATE);
+                                    loginSettings.edit().clear().commit();
+                                    Toast.makeText(getBaseContext(),"Sign Out Success",Toast.LENGTH_LONG).show();
+                                    finish();
+                                    gotoIntent("MainActivity");
+                                }
+                                break;
+
+                        }
+
+                    }
+                });
+        builder.show();
+    }
+
+    private void gotoIntent(String activity) {
+        Intent intent;
+        switch (activity) {
+            case "Login":
+                intent = new Intent(this, Login.class);
+                break;
+            case "Orders":
+                intent = new Intent(this, Orders.class);
+                intent.putExtra("allOrders", false);
+                break;
+            case "signUp":
+                intent = new Intent(this, signUp.class);
+                break;
+            case "MainActivity":
+                intent = new Intent(this, MainActivity.class);
+                break;
+
+            default:
+                intent = new Intent(this, MainActivity.class);
+                break;
+        }
+        startActivity(intent);
+
+
     }
     public void pushLst(String url,String imgName) {
         //lstImages.add(url);

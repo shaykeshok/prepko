@@ -4,8 +4,12 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -40,19 +44,27 @@ public class Purchase extends AppCompatActivity {
     private StorageReference storageRef= FirebaseStorage.getInstance().getReference();
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     DatabaseReference rootRef ;
+    private boolean isAdmin;
+    private int loginItem;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_purchase);
 
         SharedPreferences loginSettings = getSharedPreferences("LoginPreferences", MODE_PRIVATE);
-        userID=loginSettings.getString("UserID","guest");
+        userID = loginSettings.getString("userId", "guest");
+        isAdmin = loginSettings.getBoolean("isAdmin", false);
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             orderID = extras.getString("OrderID", "");
             useCredit = extras.getBoolean("useCredit", false);
             //Toast.makeText(getBaseContext(), orderID, Toast.LENGTH_LONG).show();
         }
+        int sum = calcPrice();
+
+        TextView _SumTxt=(TextView) findViewById(R.id.sum);
+        _SumTxt.append("Sum Order:"+sum);
         _full_name = (EditText) findViewById(R.id.full_name);
         _cardID = (EditText) findViewById(R.id.cardID);
         _CreditNum = (EditText) findViewById(R.id.CreditNum);
@@ -70,6 +82,137 @@ public class Purchase extends AppCompatActivity {
         }
     }
 
+    private int calcPrice() {
+        int sumOrder=0;
+        long kmt,price;
+        Task<QuerySnapshot> b = db.collection("orders").whereEqualTo("idKlali", orderID).get();
+
+        while (!b.isSuccessful()) {
+        }
+        for (QueryDocumentSnapshot doc : b.getResult()) {
+            price = (long) doc.getData().get("price");
+            kmt = (long) doc.getData().get("kmt");
+            sumOrder += kmt * price;
+        }
+        return sumOrder;
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.floatmenu, menu);
+        if(!isAdmin) {
+            MenuItem item = menu.findItem(R.id.Admin);
+            item.setVisible(false);
+        }
+        return true;
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        // Handle item selection
+        Intent intent;
+        switch (item.getItemId()) {
+            case R.id.customer:
+                loginMenu();
+
+                return true;
+            case R.id.home:
+            case R.id.homeSub:
+                intent = new Intent(this, MainActivity.class);
+                startActivity(intent);
+                return true;
+            case R.id.about:
+                intent = new Intent(this, About.class);
+                startActivity(intent);
+                return true;
+            case R.id.mealPlans:
+                intent = new Intent(this, chooseProduct.class);
+                startActivity(intent);
+                return true;
+            case R.id.Admin:
+                intent = new Intent(this, AdminMain.class);
+                startActivity(intent);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+
+    private void loginMenu() {
+        String loginItems[];
+
+        if (userID.equals("guest"))
+            loginItems = new String[]{"Log In", "Sign Up"};
+        else
+            loginItems = new String[]{"My Orders", "Edit Credit Details", "Log Out"};
+        androidx.appcompat.app.AlertDialog.Builder builder = new androidx.appcompat.app.AlertDialog.Builder(Purchase.this);
+        builder.setTitle("Login Options")
+                .setItems(loginItems, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        // The 'which' argument contains the index position
+                        // of the selected item
+                        loginItem = which;
+                        switch (loginItem) {
+                            case 0:
+                                if (userID.equals("guest")) {
+                                    gotoIntent("Login");
+
+                                } else {
+                                    gotoIntent("Orders");
+                                }
+                                break;
+                            case 1:
+                                if (userID.equals("guest")) {
+                                    gotoIntent("signUp");
+                                } else {
+                                    gotoIntent("MainActivity");
+                                }
+                                break;
+                            case 2:
+                                if (!userID.equals("guest")) {
+                                    SharedPreferences loginSettings = getSharedPreferences("LoginPreferences", MODE_PRIVATE);
+                                    loginSettings.edit().clear().commit();
+                                    Toast.makeText(getBaseContext(),"Sign Out Success",Toast.LENGTH_LONG).show();
+                                    finish();
+                                    gotoIntent("MainActivity");
+                                }
+                                break;
+
+                        }
+
+                    }
+                });
+        builder.show();
+    }
+
+    private void gotoIntent(String activity) {
+        Intent intent;
+        switch (activity) {
+            case "Login":
+                intent = new Intent(this, Login.class);
+                break;
+            case "Orders":
+                intent = new Intent(this, Orders.class);
+                intent.putExtra("allOrders", false);
+                break;
+            case "signUp":
+                intent = new Intent(this, signUp.class);
+                break;
+            case "MainActivity":
+                intent = new Intent(this, MainActivity.class);
+                break;
+
+            default:
+                intent = new Intent(this, MainActivity.class);
+                break;
+        }
+        startActivity(intent);
+
+
+    }
     public void Purchase (View view) {
         if (validate()) {
             ok = false;

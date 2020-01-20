@@ -1,5 +1,6 @@
 package com.example.prepko;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -53,6 +54,7 @@ public class chooseProduct extends AppCompatActivity {
     DatabaseReference rootRef ;
     String userID;
     private int loginItem;
+    private boolean isAdmin;
     //private boolean answerYesDialog;
 
 
@@ -63,7 +65,9 @@ public class chooseProduct extends AppCompatActivity {
         setContentView(R.layout.activity_choose_product);
 
         SharedPreferences loginSettings = getSharedPreferences("LoginPreferences", MODE_PRIVATE);
-        userID=loginSettings.getString("UserID","guest");
+        userID=loginSettings.getString("userId","guest");
+        isAdmin = loginSettings.getBoolean("isAdmin", false);
+
         //haveCreditDetails=loginSettings.getBoolean("UserHaveCreditDetails",false);
         imageView=findViewById(R.id.image);
         Task<ListResult> a = storageRef.listAll();
@@ -145,10 +149,20 @@ public class chooseProduct extends AppCompatActivity {
         });
         buttonLayout.addView(btn);
     }
+
+    public static Object nz(Object obj,Object fill){
+            if(obj==null)
+                obj=fill;
+        return obj;
+    }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.floatmenu, menu);
+        if(!isAdmin) {
+            MenuItem item = menu.findItem(R.id.Admin);
+            item.setVisible(false);
+        }
         return true;
     }
     @Override
@@ -172,6 +186,10 @@ public class chooseProduct extends AppCompatActivity {
                 return true;
             case R.id.mealPlans:
                 intent = new Intent(this, chooseProduct.class);
+                startActivity(intent);
+                return true;
+            case R.id.Admin:
+                intent = new Intent(this, AdminMain.class);
                 startActivity(intent);
                 return true;
             default:
@@ -227,6 +245,7 @@ public class chooseProduct extends AppCompatActivity {
                                     startActivity(getIntent());
                                 }
                                 break;
+
                         }
 
                     }
@@ -250,6 +269,7 @@ public class chooseProduct extends AppCompatActivity {
             case "MainActivity":
                 intent = new Intent(this, MainActivity.class);
                 break;
+
             default:
                 intent = new Intent(this, MainActivity.class);
                 break;
@@ -266,8 +286,9 @@ public class chooseProduct extends AppCompatActivity {
 
         DocumentSnapshot document = a.getResult();
         if (document.exists())
-            if (!document.get("CreditNum").toString().equals("") && !document.get("cvv").toString().equals("")
-                    && !document.get("validity").toString().equals("") && !document.get("cardID").toString().equals(""))
+
+            if (!nz(document.get("CreditNum"),"").toString().equals("") && !nz(document.get("cvv"),"").toString().equals("")
+                    && !nz(document.get("validity"),"").toString().equals("") && !nz(document.get("cardID"),"").toString().equals(""))
                 return true;
 
         return false;

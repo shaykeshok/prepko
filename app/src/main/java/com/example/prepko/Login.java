@@ -50,6 +50,8 @@ public class Login extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        SharedPreferences loginSettings = getSharedPreferences("LoginPreferences", MODE_PRIVATE);
+        isAdmin = loginSettings.getBoolean("isAdmin", false);
 
         isExistUser=false;
          loginButton = (Button) findViewById(R.id.login);
@@ -67,63 +69,13 @@ public class Login extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.floatmenu, menu);
+        if(!isAdmin) {
+            MenuItem item = menu.findItem(R.id.Admin);
+            item.setVisible(false);
+        }
         return true;
     }
-    /*@Override
-    public boolean onOptionsItemSelected(MenuItem item) {
 
-        // Handle item selection
-        Intent intent;
-        switch (item.getItemId()) {
-            case R.id.customer:
-                loginMenu();
-
-                switch (loginItem) {
-                    case 0:
-                        if (userId.equals("guest") || userId.equals("")) {
-                            intent = new Intent(this, Login.class);
-                        } else {
-                            intent = new Intent(this, Orders.class);
-                            intent.putExtra("allOrders", false);
-                        }
-                        startActivity(intent);
-                        break;
-                    case 1:
-                        if (userId.equals("guest") || userId.equals("")) {
-                            intent = new Intent(this, signUp.class);
-                        } else {
-                            intent = new Intent(this, MainActivity.class);
-                        }
-                        startActivity(intent);
-                        break;
-                    case 2:
-                        if (!userId.equals("guest") && userId.equals("")) {
-                            SharedPreferences loginSettings = getSharedPreferences("LoginPreferences", MODE_PRIVATE);
-                            loginSettings.edit().clear().commit();
-                            Toast.makeText(getBaseContext(),"Sign Out Success",Toast.LENGTH_LONG).show();
-                           *//* finish();
-                            startActivity(getIntent());*//*
-                        }
-                        break;
-                }
-                return true;
-            case R.id.home:
-            case R.id.homeSub:
-                intent = new Intent(this, MainActivity.class);
-                startActivity(intent);
-                return true;
-            case R.id.about:
-                intent = new Intent(this, About.class);
-                startActivity(intent);
-                return true;
-            case R.id.mealPlans:
-                intent = new Intent(this, chooseProduct.class);
-                startActivity(intent);
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }*/
 
 
 
@@ -151,28 +103,15 @@ public class Login extends AppCompatActivity {
                 intent = new Intent(this, chooseProduct.class);
                 startActivity(intent);
                 return true;
+            case R.id.Admin:
+                intent = new Intent(this, AdminMain.class);
+                startActivity(intent);
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
-   /* private void loginMenu() {
-        String loginItems[];
-        if (userId.equals("guest") || userId.equals(""))
-            loginItems = new String[]{"Log In", "Sign In"};
-        else
-            loginItems = new String[]{"My Orders", "Edit Credit Details", "Log Out"};
-        androidx.appcompat.app.AlertDialog.Builder builder = new androidx.appcompat.app.AlertDialog.Builder(Login.this);
-        builder.setTitle("Login Options")
-                .setItems(loginItems, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        // The 'which' argument contains the index position
-                        // of the selected item
-                        loginItem = which;
 
-                    }
-                });
-        builder.show();
-    }*/
 
     private void loginMenu() {
         String loginItems[];
@@ -211,6 +150,7 @@ public class Login extends AppCompatActivity {
                                     startActivity(getIntent());
                                 }
                                 break;
+
                         }
                     }
                 });
@@ -233,6 +173,7 @@ public class Login extends AppCompatActivity {
             case "MainActivity":
                 intent = new Intent(this, MainActivity.class);
                 break;
+
             default:
                 intent = new Intent(this, MainActivity.class);
                 break;
@@ -263,7 +204,7 @@ public class Login extends AppCompatActivity {
         progressDialog.setIcon(R.drawable.background);
         progressDialog.setProgressStyle(R.style.TextAppearance_AppCompat_Large);
         progressDialog.setTitle("Please wait");
-        progressDialog.setMessage("preparing the recipes...");
+        progressDialog.setMessage("preparing the view...");
         progressDialog.show();
 
 
@@ -326,7 +267,7 @@ public class Login extends AppCompatActivity {
     public void onLoginSuccess() {
 
         Log.d(TAG, "Login success");
-        login_help = true ;
+        login_help = true;
         SharedPreferences loginSettings = getSharedPreferences("LoginPreferences", MODE_PRIVATE);
         SharedPreferences.Editor prefEditor = loginSettings.edit();
         prefEditor.putString("userId", userId);
@@ -334,8 +275,12 @@ public class Login extends AppCompatActivity {
         prefEditor.commit();
         loginButton.setEnabled(true);
         Toast.makeText(getBaseContext(), "Login success", Toast.LENGTH_LONG).show();
-        Intent intent = new Intent(this, MainActivity.class);
-        intent.putExtra("fromLogin",true);
+        Intent intent;
+        if (isAdmin)
+             intent = new Intent(this, AdminMain.class);
+        else
+             intent = new Intent(this, MainActivity.class);
+        intent.putExtra("fromLogin", true);
         startActivity(intent);
         finish();
     }

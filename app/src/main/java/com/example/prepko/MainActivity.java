@@ -29,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
     public FirebaseFirestore db = FirebaseFirestore.getInstance();
     private int loginItem;
     private String userID;
+    boolean isAdmin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,8 +38,12 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         SharedPreferences loginSettings = getSharedPreferences("LoginPreferences", MODE_PRIVATE);
-        userID=loginSettings.getString("UserID","guest");
-        Bundle extras = getIntent().getExtras();
+        //loginSettings.edit().clear().commit();
+        userID=loginSettings.getString("userId","guest");
+        isAdmin = loginSettings.getBoolean("isAdmin", false);
+        Button _Administrator = (Button) findViewById(R.id.Administrator);
+        _Administrator.setVisibility(View.INVISIBLE);
+        /*Bundle extras = getIntent().getExtras();
         boolean fromLogin=false;
         if (extras != null)
             fromLogin=extras.getBoolean("fromLogin", false);
@@ -49,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
         if (!isAdmin) {
             Button _Administrator = (Button) findViewById(R.id.Administrator);
             _Administrator.setVisibility(View.INVISIBLE);
-        }
+        }*/
         Log.d(TAG, "userId=" + loginSettings.getString("userId", "guest"));
 
     }
@@ -57,6 +62,10 @@ public class MainActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.floatmenu, menu);
+        if(!isAdmin) {
+            MenuItem item = menu.findItem(R.id.Admin);
+            item.setVisible(false);
+        }
         return true;
     }
     @Override
@@ -82,6 +91,10 @@ public class MainActivity extends AppCompatActivity {
                 intent = new Intent(this, chooseProduct.class);
                 startActivity(intent);
                 return true;
+            case R.id.Admin:
+                intent = new Intent(this, AdminMain.class);
+                startActivity(intent);
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -104,38 +117,32 @@ public class MainActivity extends AppCompatActivity {
                         // of the selected item
                         loginItem = which;
                           switch (loginItem) {
-                    case 0:
-                        if (userID.equals("guest")) {
-                            gotoIntent("Login");
-                            //intent = new Intent(this, Login.class);
+                              case 0:
+                                  if (userID.equals("guest")) {
+                                      gotoIntent("Login");
 
-                        } else {
-                            //intent = new Intent(this, Orders.class);
-                            //intent.putExtra("allOrders", false);
-                            gotoIntent("Orders");
-                        }
-                        //startActivity(intent);
-                        break;
-                    case 1:
-                        if (userID.equals("guest")) {
-                            //intent = new Intent(this, signUp.class);
-                            gotoIntent("signUp");
-                        } else {
-                            //intent = new Intent(this, MainActivity.class);
-                            gotoIntent("MainActivity");
-                        }
-                        //startActivity(intent);
-                        break;
-                    case 2:
-                        if (!userID.equals("guest")) {
-                            SharedPreferences loginSettings = getSharedPreferences("LoginPreferences", MODE_PRIVATE);
-                            loginSettings.edit().clear().commit();
-                            Toast.makeText(getBaseContext(),"Sign Out Success",Toast.LENGTH_LONG).show();
-                            finish();
-                            startActivity(getIntent());
-                        }
-                        break;
-                }
+                                  } else {
+                                      gotoIntent("Orders");
+                                  }
+                                  break;
+                              case 1:
+                                  if (userID.equals("guest")) {
+                                      gotoIntent("signUp");
+                                  } else {
+                                      gotoIntent("MainActivity");
+                                  }
+                                  break;
+                              case 2:
+                                  if (!userID.equals("guest")) {
+                                      SharedPreferences loginSettings = getSharedPreferences("LoginPreferences", MODE_PRIVATE);
+                                      loginSettings.edit().clear().commit();
+                                      Toast.makeText(getBaseContext(), "Sign Out Success", Toast.LENGTH_LONG).show();
+                                      finish();
+                                      startActivity(getIntent());
+                                  }
+                                  break;
+
+                          }
 
                     }
                 });
@@ -144,7 +151,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void gotoIntent(String activity) {
         Intent intent;
-        switch (activity){
+        switch (activity) {
             case "Login":
                 intent = new Intent(this, Login.class);
                 break;
@@ -158,9 +165,9 @@ public class MainActivity extends AppCompatActivity {
             case "MainActivity":
                 intent = new Intent(this, MainActivity.class);
                 break;
-                default:
-                    intent = new Intent(this, MainActivity.class);
-                    break;
+            default:
+                intent = new Intent(this, MainActivity.class);
+                break;
         }
         startActivity(intent);
 
@@ -186,7 +193,7 @@ public class MainActivity extends AppCompatActivity {
                 intent = new Intent(this, MainActivity.class);
         }
 
-        finish();
+        //finish();
         startActivity(intent);
     }
     public void NavigateLogin(View view)

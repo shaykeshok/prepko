@@ -45,23 +45,21 @@ public class signUp extends AppCompatActivity {
     private String userId="";
     private int loginItem;
     private String userID;
+    boolean isAdmin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
         SharedPreferences loginSettings = getSharedPreferences("LoginPreferences", MODE_PRIVATE);
-        userID=loginSettings.getString("UserID","guest");
+        userID=loginSettings.getString("userId","guest");
+        isAdmin = loginSettings.getBoolean("isAdmin", false);
         signUpBtn = (Button) findViewById(R.id.signUpBtn);
         _phone = (TextView) findViewById(R.id.phone);
         _fullname = (TextView) findViewById(R.id.full_name);
-
         _email = (TextView) findViewById(R.id.username);
-
         _password = (TextView) findViewById(R.id.password);
-
         _RepeatPassword = (TextView) findViewById(R.id.RepeatPassword);
-
         signUpBtn.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -74,6 +72,10 @@ public class signUp extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.floatmenu, menu);
+        if(!isAdmin) {
+            MenuItem item = menu.findItem(R.id.Admin);
+            item.setVisible(false);
+        }
         return true;
     }
     @Override
@@ -97,6 +99,10 @@ public class signUp extends AppCompatActivity {
                 return true;
             case R.id.mealPlans:
                 intent = new Intent(this, chooseProduct.class);
+                startActivity(intent);
+                return true;
+            case R.id.Admin:
+                intent = new Intent(this, AdminMain.class);
                 startActivity(intent);
                 return true;
             default:
@@ -152,6 +158,7 @@ public class signUp extends AppCompatActivity {
                                     startActivity(getIntent());
                                 }
                                 break;
+
                         }
 
                     }
@@ -175,6 +182,7 @@ public class signUp extends AppCompatActivity {
             case "MainActivity":
                 intent = new Intent(this, MainActivity.class);
                 break;
+
             default:
                 intent = new Intent(this, MainActivity.class);
                 break;

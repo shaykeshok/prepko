@@ -26,6 +26,7 @@ public class About extends AppCompatActivity {
     public FirebaseFirestore db = FirebaseFirestore.getInstance();
     private int loginItem;
     private String userID;
+    private boolean isAdmin;
 
 
     @Override
@@ -33,7 +34,9 @@ public class About extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_about);
         SharedPreferences loginSettings = getSharedPreferences("LoginPreferences", MODE_PRIVATE);
-        userID=loginSettings.getString("UserID","guest");
+        userID=loginSettings.getString("userId","guest");
+        isAdmin = loginSettings.getBoolean("isAdmin", false);
+
         DocumentReference docRef = db.collection("param").document("W8GT0yCRTfnyMSho6e0o");
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
@@ -63,6 +66,10 @@ public class About extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.floatmenu, menu);
+        if(!isAdmin) {
+            MenuItem item = menu.findItem(R.id.Admin);
+            item.setVisible(false);
+        }
         return true;
     }
     @Override
@@ -86,6 +93,10 @@ public class About extends AppCompatActivity {
                 return true;
             case R.id.mealPlans:
                 intent = new Intent(this, chooseProduct.class);
+                startActivity(intent);
+                return true;
+            case R.id.Admin:
+                intent = new Intent(this, AdminMain.class);
                 startActivity(intent);
                 return true;
             default:
@@ -136,11 +147,12 @@ public class About extends AppCompatActivity {
                                 if (!userID.equals("guest")) {
                                     SharedPreferences loginSettings = getSharedPreferences("LoginPreferences", MODE_PRIVATE);
                                     loginSettings.edit().clear().commit();
-                                    Toast.makeText(getBaseContext(),"Sign Out Success",Toast.LENGTH_LONG).show();
+                                    Toast.makeText(getBaseContext(), "Sign Out Success", Toast.LENGTH_LONG).show();
                                     finish();
                                     startActivity(getIntent());
                                 }
                                 break;
+
                         }
 
                     }
@@ -164,6 +176,7 @@ public class About extends AppCompatActivity {
             case "MainActivity":
                 intent = new Intent(this, MainActivity.class);
                 break;
+
             default:
                 intent = new Intent(this, MainActivity.class);
                 break;
